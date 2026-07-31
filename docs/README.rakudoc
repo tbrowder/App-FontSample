@@ -1,0 +1,30 @@
+=begin pod
+
+=head1 NAME
+
+B<App::FontSample> - Provides an engine to create samples of selected fonts
+
+
+=head1 SYNOPSIS
+
+=begin code :lang<raku>
+
+use App::FontSample;
+
+=end code
+
+=head1 DESCRIPTION
+
+B<App::FontSample> is ...
+
+=head1 AUTHOR
+
+Tom Browder <tbrowder@acm.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+© 2026 Tom Browder
+
+This library is free software; you may redistribute it or modify it under the Artistic License 2.0.
+
+=end pod
