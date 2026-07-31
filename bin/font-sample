@@ -1,0 +1,94 @@
+#!/usr/bin/env raku
+use v6.d;
+use App::FontSample;
+use App::FontSample::PDF;
+use App::FontSample::Paper;
+use PDF::Font::Loader :load-font;
+
+sub usage(Int:D $status = 0 --> Nil) {
+    my $out = $status == 0 ?? $*OUT !! $*ERR;
+
+    $out.say: q:to/END/;
+    Usage:
+      font-sample --font=FILE --output=FILE [options]
+
+    Required:
+      --font=FILE          OTF or TTF font file
+      --output=FILE        Output PDF file
+
+    Options:
+      --name=TEXT          Display name; defaults to font filename
+      --family=TEXT        Font family metadata
+      --style=TEXT         Font style; default: Regular
+      --paper=Letter|A4    Paper size; default: Letter
+      --landscape          Use landscape orientation
+      --margin=POINTS      Margin in PDF points; default: 36
+      --text=TEXT          Text used in the size waterfall
+      --pangram=TEXT       Pangram shown on the specimen page
+      --sizes=N,N,...      Waterfall sizes; default: 8,10,12,16,20,28,36
+      --help               Show this help
+    END
+
+    exit $status;
+}
+
+my %options;
+
+for @*ARGS -> $arg {
+    if $arg eq '--help' or $arg eq '-h' {
+        usage;
+    }
+    elsif $arg eq '--landscape' {
+        %options<landscape> = True;
+    }
+    elsif $arg ~~ /^ '--' (<[A..Za..z0..9_-]>+) '=' (.*) $/ {
+        %options{~$0} = ~$1;
+    }
+    else {
+        $*ERR.say: "Unknown argument: $arg";
+        usage 2;
+    }
+}
+
+for <font output> -> $required {
+    unless %options{$required}:exists and %options{$required}.chars {
+        $*ERR.say: "Missing required option --$required";
+        usage 2;
+    }
+}
+
+my IO::Path $font-file = %options<font>.IO;
+die "Font file does not exist: $font-file" unless $font-file.f;
+
+my $font = load-font: :file($font-file.Str);
+my Str $name = %options<name> // $font-file.basename;
+my Str $paper-name = %options<paper> // 'Letter';
+my Numeric $margin = (%options<margin> // 36).Numeric;
+my @sizes;
+
+if %options<sizes>:exists {
+    for %options<sizes>.split(',') -> $item {
+        @sizes.push: $item.Numeric;
+    }
+}
+
+my $sampler = App::FontSample::PDF.new(
+    :paper(App::FontSample::Paper.new(
+        :name($paper-name),
+        :landscape(%options<landscape> // False),
+        :$margin,
+    )),
+);
+
+my %render-options =
+    name   => $name,
+    family => (%options<family> // ''),
+    style  => (%options<style> // 'Regular'),
+    output => %options<output>;
+
+%render-options<text> = %options<text> if %options<text>:exists;
+%render-options<pangram> = %options<pangram> if %options<pangram>:exists;
+%render-options<sizes> = @sizes if @sizes.elems;
+
+my $output = $sampler.render-font($font, |%render-options);
+say "Created $output";
