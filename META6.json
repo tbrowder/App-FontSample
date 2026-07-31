@@ -1,13 +1,20 @@
 {
+  "api": "1",
   "auth": "zef:tbrowder",
   "authors": [
-    "Tom Browder"
+    "Thomas Browder"
+  ],
+  "bin": [
+    "font-sample"
   ],
   "build-depends": [
   ],
   "depends": [
+    "PDF::API6",
+    "PDF::Content::FontObj",
+    "PDF::Font::Loader"
   ],
-  "description": "Provides an engine to create samples of selected fonts\n",
+  "description": "Produce PDF font specimens from PDF::Content::FontObj objects",
   "license": "Artistic-2.0",
   "name": "App::FontSample",
   "perl": "6.d",
@@ -16,8 +23,13 @@
   },
   "resources": [
   ],
-  "source-url": "",
+  "source-url": "https://github.com/tbrowder/App-FontSample.git",
   "tags": [
+    "PDF",
+    "font",
+    "specimen",
+    "sample",
+    "typography"
   ],
   "test-depends": [
   ],
