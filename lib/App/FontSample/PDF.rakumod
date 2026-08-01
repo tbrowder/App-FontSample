@@ -92,8 +92,8 @@ method render-collection(
         );
     }
 
-    my IO::Path $path = $output.IO.absolute;
-    $path.dirname.IO.mkdir unless $path.dirname.IO.d;
+    my IO::Path $path = $output.IO; #.absolute;
+#   $path.dirname.IO.mkdir unless $path.dirname.IO.d;
     $pdf.save-as: $path.Str;
 
     return $path;

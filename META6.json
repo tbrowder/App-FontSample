@@ -19,7 +19,14 @@
   "name": "App::FontSample",
   "perl": "6.d",
   "provides": {
-    "App::FontSample": "lib/App/FontSample.rakumod"
+    "App::FontSample": "lib/App/FontSample.rakumod",
+    "App::FontSample::FontEntry": "lib/App/FontSample/FontEntry.rakumod",
+    "App::FontSample::Layout": "lib/App/FontSample/Layout.rakumod",
+    "App::FontSample::Layout::Specimen": "lib/App/FontSample/Layout/Specimen.rakumod",
+    "App::FontSample::PDF": "lib/App/FontSample/PDF.rakumod",
+    "App::FontSample::Paper": "lib/App/FontSample/Paper.rakumod",
+    "App::FontSample::Provider": "lib/App/FontSample/Provider.rakumod",
+    "App::FontSample::SampleText": "lib/App/FontSample/SampleText.rakumod"
   },
   "resources": [
   ],
