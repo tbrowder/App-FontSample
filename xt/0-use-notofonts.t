@@ -14,10 +14,9 @@ use NotoFonts-OT::FontPaths;
 use App::FontSample::PDF;
 use App::FontSample::FontEntry;
 
-
 # Adjust these calls if the provider's final public API uses different names.
 #my $provider = NotoFonts-OT::FontPaths; 
-#my $provider = NotoFonts-OT;
+my $provider = NotoFonts-OT;
 my @entries;
 
 for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $key {
@@ -26,9 +25,10 @@ for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $key {
     # key is a font name, get the font path
 
 #   #*=begin comment
-#   my IO::Path $path = get-font-path $key;
-#   say "font path: $path";
-#   say $path.e;
+    my IO::Path $path = get-font-path $key;
+    isa-ok $path, IO::Path, "'$path' is an IO::Path object";
+    say "font path: $path";
+    say $path.e;
 
     my $loaded-font = get-loaded-font $key;
     isa-ok $loaded-font, PDF::Content::FontObj;
@@ -37,13 +37,13 @@ for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $key {
     say "exit code: {$proc.exitcode}";
     say $proc.out.get;
 
-    =begin comment
+    #=begin comment
     @entries.push: App::FontSample::FontEntry.new(
         :name($key),
-        #:font($provider.font($key)),
-        :$font,
+        :font($provider.font($key)),
+        #:$font,
     );
-    =end comment
+    #=end comment
 
 }
 
