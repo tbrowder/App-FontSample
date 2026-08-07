@@ -1,6 +1,13 @@
 use v6.d;
 use Test;
 
+use MacOS::NativeLib "*";
+use PDF::Font::Loader::HarfBuzz;
+use PDF::Font::Loader :load-font;
+use PDF::Content;
+use PDF::Content::FontObj;
+use PDF::Lite;
+
 use NotoFonts-OT;
 use NotoFonts-OT::FontPaths;
 
@@ -18,25 +25,26 @@ for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $key {
     say "DEBUG: font name: '$key'";
     # key is a font name, get the font path
 
-    #*=begin comment
-    my IO::Path $path = get-font-path $key;
-    say "font path: $path";
-    say $path.e;
+#   #*=begin comment
+#   my IO::Path $path = get-font-path $key;
+#   say "font path: $path";
+#   say $path.e;
 
-    =begin comment
     my $loaded-font = get-loaded-font $key;
-    isa-ok, $loaded-font, PDF::FontObj;
+    isa-ok $loaded-font, PDF::Content::FontObj;
 
     my $proc = run "get-font-path", $key, :out, :err;
     say "exit code: {$proc.exitcode}";
     say $proc.out.get;
 
+    =begin comment
     @entries.push: App::FontSample::FontEntry.new(
         :name($key),
         #:font($provider.font($key)),
         :$font,
     );
     =end comment
+
 }
 
 done-testing;
