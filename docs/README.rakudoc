@@ -4,7 +4,6 @@
 
 B<App::FontSample> - Provides an engine to create samples of selected fonts
 
-
 =head1 SYNOPSIS
 
 =begin code :lang<raku>

@@ -5,6 +5,8 @@ use App::FontSample::PDF;
 use App::FontSample::Paper;
 use PDF::Font::Loader :load-font;
 
+use NotoFonts::FontPaths;
+
 sub usage(Int:D $status = 0 --> Nil) {
     my $out = $status == 0 ?? $*OUT !! $*ERR;
 
@@ -60,7 +62,7 @@ for <font output> -> $required {
 my IO::Path $font-file = %options<font>.IO;
 die "Font file does not exist: $font-file" unless $font-file.f;
 
-my $font = load-font: :file($font-file.Str);
+my $font = load-font :file($font-file.Str);
 my Str $name = %options<name> // $font-file.basename;
 my Str $paper-name = %options<paper> // 'Letter';
 my Numeric $margin = (%options<margin> // 36).Numeric;

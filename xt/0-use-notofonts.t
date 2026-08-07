@@ -1,0 +1,52 @@
+use v6.d;
+use Test;
+
+use NotoFonts-OT;
+use NotoFonts-OT::FontPaths;
+
+use App::FontSample::PDF;
+use App::FontSample::FontEntry;
+
+
+# Adjust these calls if the provider's final public API uses different names.
+#my $provider = NotoFonts-OT::FontPaths; 
+#my $provider = NotoFonts-OT;
+my @entries;
+
+for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $key {
+
+    say "DEBUG: font name: '$key'";
+    # key is a font name, get the font path
+
+    #*=begin comment
+    my IO::Path $path = get-font-path $key;
+    say "font path: $path";
+    say $path.e;
+
+    =begin comment
+    my $loaded-font = get-loaded-font $key;
+    isa-ok, $loaded-font, PDF::FontObj;
+
+    my $proc = run "get-font-path", $key, :out, :err;
+    say "exit code: {$proc.exitcode}";
+    say $proc.out.get;
+
+    @entries.push: App::FontSample::FontEntry.new(
+        :name($key),
+        #:font($provider.font($key)),
+        :$font,
+    );
+    =end comment
+}
+
+done-testing;
+
+=finish
+
+my $sampler = App::FontSample::PDF.new;
+$sampler.render-collection(
+    @entries,
+    :output<noto-samples.pdf>,
+);
+
+

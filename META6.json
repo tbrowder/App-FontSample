@@ -10,6 +10,7 @@
   "build-depends": [
   ],
   "depends": [
+    "NotoFonts-OT:ver<0.0.3+>",
     "PDF::API6",
     "PDF::Content::FontObj",
     "PDF::Font::Loader"
