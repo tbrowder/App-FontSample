@@ -35,12 +35,15 @@ for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $key {
 
     my $proc = run "get-font-path", $key, :out, :err;
     say "exit code: {$proc.exitcode}";
-    say $proc.out.get;
+    my $out = $proc.out.slurp(:close);
+    my $err = $proc.err.slurp(:close);
+    say "stdout: $out";
+    say "stderr: $err";
 
     #=begin comment
     @entries.push: App::FontSample::FontEntry.new(
         :name($key),
-        :font($provider.font($key)),
+        :font(get-loaded-font($key)),
         #:$font,
     );
     #=end comment

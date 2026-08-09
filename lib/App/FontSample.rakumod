@@ -8,33 +8,26 @@ unit module App::FontSample;
 sub create-font-sample(
     PDF::Content::FontObj:D $font,
     Str:D :$name!,
-    IO() :$output! where *.so,
-    Str:D :$paper = 'Letter',
-    Bool:D :$landscape = False,
-    Numeric:D :$margin = 36e0,
-    Str:D :$family = '',
-    Str:D :$style = 'Regular',
+    IO() :$output!, #  where *.so,
+    Str:D :$layout = "specimen",
     Str :$text,
-    Str :$pangram,
-    Positional :$sizes,
+    :@sizes,
+    Str:D :$media = 'Letter',
+    Bool:D :$landscape = False,
+    Numeric:D :$margin = 36,
     --> IO::Path:D
 ) is export {
-    my $sampler = App::FontSample::PDF.new(
-        :paper(App::FontSample::Paper.new(
-            :name($paper),
-            :$landscape,
-            :$margin,
-        )),
-    );
 
-    return $sampler.render-font(
+    return App::FontSample::PDF.new(
+        :$media,
+        :$landscape,
+        :$margin,
+    ).render-font(
         $font,
         :$name,
-        :$family,
-        :$style,
         :$output,
+        :$layout,
         :$text,
-        :$pangram,
-        :$sizes,
+        :@sizes,
     );
 }

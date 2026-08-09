@@ -6,7 +6,7 @@ method render-page(
     :$pdf!,
     :$page!,
     :$entry!,
-    :$paper!,
+    :$media!,
     :$label-font!,
     :%options!,
     --> Nil

@@ -5,7 +5,7 @@ use App::FontSample::PDF;
 use App::FontSample::Paper;
 use PDF::Font::Loader :load-font;
 
-use NotoFonts::FontPaths;
+use NotoFonts-OT::FontPaths;
 
 sub usage(Int:D $status = 0 --> Nil) {
     my $out = $status == 0 ?? $*OUT !! $*ERR;
