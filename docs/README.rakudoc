@@ -1,29 +1,381 @@
 =begin pod
 
-=head1 NAME
+=TITLE App::FontSample
 
-B<App::FontSample> - Provides an engine to create samples of selected fonts
+=SUBTITLE Produce PDF font specimens from any PDF::Content::FontObj
 
 =head1 SYNOPSIS
 
-=begin code :lang<raku>
+Library use with one already-loaded font:
 
+=begin code :lang<raku>
 use App::FontSample;
 
+my $font = $provider.get-font('NotoSerif-Regular');
+
+create-font-sample(
+    $font,
+    :name<NotoSerif-Regular>,
+    :paper<Letter>,
+    :layout<specimen>,
+    :output<noto-serif-regular.pdf>,
+);
+=end code
+
+Command-line use with an OTF or TTF file:
+
+=begin code :lang<text>
+font-sample \
+    --font=/path/to/font.otf \
+    --output=sample.pdf \
+    --layout=waterfall \
+    --paper=Letter
+=end code
+
+Command-line use with a reproducible JSON job:
+
+=begin code :lang<text>
+font-sample --config=font-sample.json
 =end code
 
 =head1 DESCRIPTION
 
-B<App::FontSample> is ...
+C<App::FontSample> separates font acquisition from specimen rendering. A
+library caller supplies one or more objects that do C<PDF::Content::FontObj>.
+The command-line program loads OTF or TTF files directly or reads a JSON job.
+
+The application does not require a particular font collection module.
+C<NotoFonts-OT>, core PDF fonts, and other font providers can all supply the
+font objects used by the library API.
+
+Letter and A4 paper are supported in portrait and landscape orientation.
+
+=head1 LAYOUTS
+
+=head2 specimen
+
+One page per font. Shows the font name, uppercase and lowercase alphabets,
+numerals and punctuation, a pangram, and a size waterfall.
+
+=head2 waterfall
+
+One page per font devoted to the same sample string at several point sizes.
+
+=head2 comparison
+
+Shows the same sample text in each supplied font. Multiple pages are created
+when necessary. This layout is especially useful for a font collection.
+
+=head2 characters
+
+Shows selected characters in a grid with their Unicode code points. The
+C<characters> option determines which characters are shown.
+
+=head1 JSON INPUT
+
+The JSON root must contain C<output> and a non-empty C<fonts> array. Other
+keys are optional.
+
+=begin code :lang<json>
+{
+    "output": "output/font-samples.pdf",
+    "paper": "Letter",
+    "landscape": false,
+    "margin": 36,
+    "layout": "comparison",
+    "title": "Font Comparison",
+    "language": "en",
+    "comparison-size": 18,
+    "fonts": [
+        {
+            "file": "fonts/NotoSerif-Regular.otf",
+            "name": "Noto Serif Regular",
+            "family": "Noto Serif",
+            "style": "Regular"
+        },
+        {
+            "file": "fonts/NotoSans-Regular.otf",
+            "name": "Noto Sans Regular",
+            "family": "Noto Sans",
+            "style": "Regular"
+        }
+    ]
+}
+=end code
+
+Relative C<output> and font C<file> paths are resolved from the directory
+containing the JSON file.
+
+=head2 Top-level JSON keys
+
+=item C<output>
+
+Required output PDF path.
+
+=item C<fonts>
+
+Required array containing one or more font-entry objects.
+
+=item C<layout>
+
+C<specimen>, C<waterfall>, C<comparison>, or C<characters>. The default is
+C<specimen>.
+
+=item C<paper>
+
+C<Letter> or C<A4>. The default is C<Letter>.
+
+=item C<landscape>
+
+Boolean. The default is C<false>.
+
+=item C<margin>
+
+Margin in PDF points. The default is 36 points, or one-half inch.
+
+=item C<title>
+
+Heading printed on the generated pages.
+
+=item C<language>
+
+ISO language code for a built-in pangram. An explicit C<pangram> overrides
+this value.
+
+=item C<text>
+
+Main sample text. Layouts use the pangram when this is absent.
+
+=item C<pangram>
+
+Explicit pangram or sample sentence.
+
+=item C<sizes>
+
+Array of positive point sizes used by waterfall rendering.
+
+=item C<characters>
+
+Characters displayed by the C<characters> layout.
+
+=item C<columns>
+
+Number of columns used by the C<characters> layout.
+
+=item C<comparison-size>
+
+Point size used by the C<comparison> layout.
+
+=head2 Font-entry keys
+
+=item C<file>
+
+Required OTF or TTF file path.
+
+=item C<name>
+
+Display and identifying name. The filename is used when absent.
+
+=item C<family>
+
+Optional family metadata.
+
+=item C<style>
+
+Optional style metadata. The default is C<Regular>.
+
+=item C<source>
+
+Optional source description.
+
+=head1 LIBRARY API
+
+=head2 create-font-sample
+
+Creates a PDF from one C<PDF::Content::FontObj>.
+
+=head2 create-font-collection-sample
+
+Creates a PDF from a positional collection of C<App::FontSample::FontEntry>
+objects. The default layout for this routine is C<comparison>.
+
+=head1 NOTOFONTS-OT
+
+The published C<NotoFonts-OT> module directly supplies suitable font objects
+through its C<get-font> method. It is intentionally not a required dependency
+of this application.
+
+=begin code :lang<raku>
+use NotoFonts-OT;
+use App::FontSample;
+use App::FontSample::FontEntry;
+
+my $noto = NotoFonts-OT.new;
+my @entries;
+
+for 1..10 -> $code {
+    my $font = $noto.get-font($code);
+
+    @entries.push: App::FontSample::FontEntry.new(
+        :name("Noto font $code"),
+        :$font,
+    );
+}
+
+create-font-collection-sample(
+    @entries,
+    :layout<comparison>,
+    :output<noto-comparison.pdf>,
+);
+=end code
+
+See C<examples/noto-provider.raku> for an example using all ten published
+font names.
+
+=head1 LANGUAGE SAMPLES
+
+C<App::FontSample::SampleText> provides a small built-in registry. The CLI
+lists the currently registered codes with:
+
+=begin code :lang<text>
+font-sample --languages
+=end code
+
+A library caller can register another pangram at runtime.
+
+=head1 TESTING
+
+=begin code :lang<text>
+zef test .
+=end code
+
+The rendering test creates its PDF under C<$*TMPDIR/> and removes it at scope
+exit. Set its local C<$debug> flag when retaining output is useful during
+development.
 
 =head1 AUTHOR
 
-Tom Browder <tbrowder@acm.org>
-
-=head1 COPYRIGHT AND LICENSE
-
-© 2026 Tom Browder
-
-This library is free software; you may redistribute it or modify it under the Artistic License 2.0.
+Thomas Browder
 
 =end pod
+
+=finish
+
+## Single-page font collection
+
+The `collection` layout is intended for compact comparison of a complete
+font set on one page. It defaults to 14 pt with 20 percent extra leading.
+
+With `NotoFonts-OT` installed:
+
+```raku
+use NotoFonts-OT;
+use App::FontSample;
+use App::FontSample::FontEntry;
+
+my @entries;
+
+for <
+    NotoSerif-Regular
+    NotoSerif-Bold
+    NotoSerif-Italic
+    NotoSerif-BoldItalic
+    NotoSans-Regular
+    NotoSans-Bold
+    NotoSans-Italic
+    NotoSans-BoldItalic
+    NotoSansMono-Regular
+    NotoSansMono-Bold
+> -> $code {
+    @entries.push: App::FontSample::FontEntry.new(
+        :name($code),
+        :font(get-loaded-font($code)),
+    );
+}
+
+create-font-collection-sample(
+    @entries,
+    :layout<collection>,
+    :sample-size(14),
+    :leading-ratio(0.20),
+    :output<noto-10-fonts.pdf>,
+);
+```
+
+The layout deliberately refuses to overflow the lower margin. If all
+entries cannot fit on one page, reduce `sample-size` or use the paginated
+`comparison` layout.
+
+## JSON sample definitions
+
+`font-sample --config=FILE` accepts either the original single-sample
+object or a multi-sample definition containing `defaults` and `samples`.
+
+The preferred multi-sample form is:
+
+```json
+{
+    "defaults": {
+        "paper": "Letter",
+        "margin": 36,
+        "language": "en"
+    },
+    "samples": [
+        {
+            "output": "output/serif-waterfall.pdf",
+            "layout": "waterfall",
+            "sizes": [8, 10, 12, 14, 18, 24, 36],
+            "fonts": [
+                {
+                    "file": "fonts/NotoSerif-Regular.otf",
+                    "name": "NotoSerif-Regular"
+                }
+            ]
+        },
+        {
+            "output": "output/font-collection.pdf",
+            "layout": "collection",
+            "sample-size": 14,
+            "leading-ratio": 0.20,
+            "fonts": [
+                {
+                    "file": "fonts/NotoSerif-Regular.otf",
+                    "name": "NotoSerif-Regular"
+                },
+                {
+                    "file": "fonts/NotoSans-Regular.otf",
+                    "name": "NotoSans-Regular"
+                }
+            ]
+        }
+    ]
+}
+```
+
+Values in a sample override values from `defaults`. A `fonts` array in
+`defaults` is especially useful when several layouts are to be generated
+from the same font collection.
+
+All relative font paths and output paths are interpreted relative to the
+JSON definition file, not the current working directory.
+
+Run all jobs with:
+
+```text
+font-sample --config=examples/font-samples.json
+```
+
+The original one-job form remains valid:
+
+```json
+{
+    "output": "output/sample.pdf",
+    "layout": "specimen",
+    "fonts": [
+        {
+            "file": "fonts/MyFont.otf",
+            "name": "My Font"
+        }
+    ]
+}
+```

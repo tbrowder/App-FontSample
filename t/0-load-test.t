@@ -9,6 +9,8 @@ my @modules = <
     App::FontSample::Layout::Specimen
     App::FontSample::Provider
     App::FontSample::SampleText
+    App::FontSample::Config
+    App::FontSample::ConfigFile
 >;
 
 plan @modules.elems;

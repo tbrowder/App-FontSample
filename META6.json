@@ -10,12 +10,12 @@
   "build-depends": [
   ],
   "depends": [
-    "NotoFonts-OT:ver<0.1.0>",
     "PDF::API6",
     "PDF::Content::FontObj",
-    "PDF::Font::Loader"
+    "PDF::Font::Loader",
+    "JSON::Fast"
   ],
-  "description": "Produce PDF font specimens from PDF::Content::FontObj objects",
+  "description": "Produce PDF font specimens and comparisons from PDF::Content::FontObj objects",
   "license": "Artistic-2.0",
   "name": "App::FontSample",
   "perl": "6.d",
@@ -41,5 +41,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.0.1"
+  "version": "0.1.2"
 }

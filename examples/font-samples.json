@@ -1,0 +1,85 @@
+{
+    "defaults": {
+        "paper": "Letter",
+        "landscape": false,
+        "margin": 36,
+        "language": "en"
+    },
+    "samples": [
+        {
+            "output": "output/noto-serif-waterfall.pdf",
+            "layout": "waterfall",
+            "title": "Noto Serif Regular",
+            "sizes": [
+                8,
+                9,
+                10,
+                11,
+                12,
+                14,
+                18,
+                24,
+                30,
+                36,
+                48,
+                60
+            ],
+            "fonts": [
+                {
+                    "file": "fonts/NotoSerif-Regular.otf",
+                    "name": "NotoSerif-Regular"
+                }
+            ]
+        },
+        {
+            "output": "output/noto-collection.pdf",
+            "layout": "collection",
+            "title": "Noto Ten Font Collection",
+            "sample-size": 14,
+            "leading-ratio": 0.2,
+            "text": "Sphinx of black quartz, judge my vow. 0123456789",
+            "fonts": [
+                {
+                    "file": "fonts/NotoSerif-Regular.otf",
+                    "name": "NotoSerif-Regular"
+                },
+                {
+                    "file": "fonts/NotoSerif-Bold.otf",
+                    "name": "NotoSerif-Bold"
+                },
+                {
+                    "file": "fonts/NotoSerif-Italic.otf",
+                    "name": "NotoSerif-Italic"
+                },
+                {
+                    "file": "fonts/NotoSerif-BoldItalic.otf",
+                    "name": "NotoSerif-BoldItalic"
+                },
+                {
+                    "file": "fonts/NotoSans-Regular.otf",
+                    "name": "NotoSans-Regular"
+                },
+                {
+                    "file": "fonts/NotoSans-Bold.otf",
+                    "name": "NotoSans-Bold"
+                },
+                {
+                    "file": "fonts/NotoSans-Italic.otf",
+                    "name": "NotoSans-Italic"
+                },
+                {
+                    "file": "fonts/NotoSans-BoldItalic.otf",
+                    "name": "NotoSans-BoldItalic"
+                },
+                {
+                    "file": "fonts/NotoSansMono-Regular.otf",
+                    "name": "NotoSansMono-Regular"
+                },
+                {
+                    "file": "fonts/NotoSansMono-Bold.otf",
+                    "name": "NotoSansMono-Bold"
+                }
+            ]
+        }
+    ]
+}
