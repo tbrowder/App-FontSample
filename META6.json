@@ -21,6 +21,8 @@
   "perl": "6.d",
   "provides": {
     "App::FontSample": "lib/App/FontSample.rakumod",
+    "App::FontSample::Config": "lib/App/FontSample/Config.rakumod",
+    "App::FontSample::ConfigFile": "lib/App/FontSample/ConfigFile.rakumod",
     "App::FontSample::FontEntry": "lib/App/FontSample/FontEntry.rakumod",
     "App::FontSample::Layout": "lib/App/FontSample/Layout.rakumod",
     "App::FontSample::Layout::Specimen": "lib/App/FontSample/Layout/Specimen.rakumod",
