@@ -44,7 +44,7 @@ method from-file(
             die "Sample entry {$index + 1} must be an object"
                 unless $sample-data ~~ Associative;
 
-            my %sample = %sample-data.Hash;
+            my %sample = $sample-data.Hash;
             my %merged;
 
             for %defaults.kv -> $key, $value {

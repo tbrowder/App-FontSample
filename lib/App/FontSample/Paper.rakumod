@@ -7,9 +7,9 @@ my constant %PAPER = %(
    A4     => [595, 842],
 );
 
-has Str:D  $.paper     = 'Letter';
-has Bool:D $.landscape = False;
-has Int:D  $.margin    = 36;
+has Str:D     $.paper     = 'Letter';
+has Bool:D    $.landscape = False;
+has Numeric:D $.margin    = 36;
 
 method width(--> Int:D) {
     return $!landscape 
@@ -23,7 +23,7 @@ method height(--> Int:D) {
         !! %PAPER{$!paper}[1];
 }
 
-method usable-width(--> Int:D) {
+method usable-width(--> Numeric:D) {
     return self.width - 2 * $!margin;
 }
 

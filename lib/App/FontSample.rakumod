@@ -12,6 +12,7 @@ sub create-font-sample(
     Str:D :$name!,
     IO() :$output! where *.so,
     Str:D :$paper = 'Letter',
+    Str :$media,
     Bool:D :$landscape = False,
     Numeric:D :$margin = 36e0,
     Str:D :$family = '',
@@ -29,6 +30,8 @@ sub create-font-sample(
     Numeric :$leading-ratio,
     --> IO::Path:D
 ) is export {
+    my Str $paper-name = $media // $paper;
+
     my Str $selected-pangram = $pangram;
 
     if !$selected-pangram.defined and $language.defined {
@@ -39,7 +42,7 @@ sub create-font-sample(
         :$title,
         :$layout,
         :paper(App::FontSample::Paper.new(
-            :name($paper),
+            :paper($paper-name),
             :$landscape,
             :$margin,
         )),
@@ -61,10 +64,12 @@ sub create-font-sample(
         :$leading-ratio,
     );
 }
+
 sub create-font-collection-sample(
     Positional:D $entries where *.elems > 0,
     IO() :$output! where *.so,
     Str:D :$paper = 'Letter',
+    Str :$media,
     Bool:D :$landscape = False,
     Numeric:D :$margin = 36e0,
     Str:D :$layout = 'comparison',
@@ -80,6 +85,7 @@ sub create-font-collection-sample(
     Numeric :$leading-ratio,
     --> IO::Path:D
 ) is export {
+    my Str $paper-name = $media // $paper;
     my Str $selected-pangram = $pangram;
 
     if !$selected-pangram.defined and $language.defined {
@@ -90,7 +96,7 @@ sub create-font-collection-sample(
         :$title,
         :$layout,
         :paper(App::FontSample::Paper.new(
-            :name($paper),
+            :paper($paper-name),
             :$landscape,
             :$margin,
         )),
