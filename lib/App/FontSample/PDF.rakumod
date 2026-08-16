@@ -7,24 +7,22 @@ use App::FontSample::Layout::Specimen;
 
 unit class App::FontSample::PDF;
 
-has App::FontSample::Paper:D $.paper = App::FontSample::Paper.new;
+has App::FontSample::Paper:D $.paper =
+    App::FontSample::Paper.new;
+
 has Str:D $.title = 'Font Samples';
-has Str $.layout  = 'specimen';
+has Str:D $.layout = 'specimen';
 
 method render(
     App::FontSample::FontEntry:D $entry,
     IO() :$output! where *.so,
-    Str :$text,
-    Str :$pangram,
-    Positional :$sizes,
+    *%options,
     --> IO::Path:D
 ) {
     return self.render-collection(
-        $entry,
+        [$entry],
         :$output,
-        :$text,
-        :$pangram,
-        :$sizes,
+        |%options,
     );
 }
 
@@ -32,47 +30,38 @@ method render-font(
     PDF::Content::FontObj:D $font,
     Str:D :$name!,
     IO() :$output! where *.so,
-    Str   :$family,
+    Str :$family,
     Str:D :$style = 'Regular',
-    Str   :$source,
-    Str :$text,
-    Str :$pangram,
-    Positional :$sizes,
+    Str :$source,
+    *%options,
     --> IO::Path:D
 ) {
-    my $entry = App::FontSample::FontEntry.new(
-        :$name,
-        :$font,
-        :$family,
-        :$style,
-        :$source,
-    );
+    my $entry =
+        App::FontSample::FontEntry.new(
+            :$name,
+            :$font,
+            :family($family // ''),
+            :$style,
+            :source($source // ''),
+        );
 
     return self.render(
         $entry,
         :$output,
-        :$text,
-        :$pangram,
-        :$sizes,
+        |%options,
     );
 }
 
 method render-collection(
     Positional:D $entries where *.elems > 0,
     IO() :$output! where *.so,
-    Str :$text,
-    Str :$pangram,
-    Positional :$sizes,
+    *%options,
     --> IO::Path:D
 ) {
     my PDF::API6 $pdf .= new;
+
     my PDF::Content::FontObj $label-font =
         $pdf.core-font: :family<Helvetica>;
-
-    my %options;
-    %options<text>    = $text if $text.defined;
-    %options<pangram> = $pangram if $pangram.defined;
-    %options<sizes>   = $sizes.List if $sizes.defined;
 
     my $layout = self.layout-object;
 
@@ -83,18 +72,18 @@ method render-collection(
         my $page = $pdf.add-page;
         $page.media-box = $!paper.media-box;
 
-
-        $!layout.render-page(
+        $layout.render-page(
             :$pdf,
             :$page,
             :$entry,
             :paper($!paper),
             :$label-font,
-            :%options,
+            :options(%options),
         );
     }
 
-    my IO::Path $path = $output.IO; #.absolute;
+    my IO::Path $path = $output.IO;
+
     $pdf.save-as: $path.Str;
 
     return $path;
@@ -105,9 +94,11 @@ method layout-object() {
         when 'specimen' {
             return App::FontSample::Layout::Specimen.new;
         }
+        when 'waterfall' {
+            return App::FontSample::Layout::Specimen.new;
+        }
         default {
             die "Unknown layout '$!layout'";
         }
     }
 }
-

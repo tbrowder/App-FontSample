@@ -9,7 +9,7 @@ has IO::Path:D $.base-dir is required;
 has IO::Path:D $.output is required;
 has Str:D $.paper = 'Letter';
 has Bool:D $.landscape = False;
-has Numeric:D $.margin = 36e0;
+has Numeric:D $.margin = 36;
 has Str:D $.title = 'Font Samples';
 has Str:D $.layout = 'specimen';
 has Str $.language;

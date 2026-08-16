@@ -14,39 +14,37 @@ sub create-font-sample(
     Str:D :$paper = 'Letter',
     Str :$media,
     Bool:D :$landscape = False,
-    Numeric:D :$margin = 36e0,
+    Numeric:D :$margin = 36,
     Str:D :$family = '',
     Str:D :$style = 'Regular',
     Str:D :$layout = 'specimen',
     Str:D :$title = 'Font Samples',
     Str :$language,
-    Str :$text,
-    Str :$pangram,
-    Positional :$sizes,
-    Str :$characters,
-    Numeric :$comparison-size,
-    Int :$columns,
-    Numeric :$sample-size,
-    Numeric :$leading-ratio,
+    *%options,
     --> IO::Path:D
 ) is export {
     my Str $paper-name = $media // $paper;
 
-    my Str $selected-pangram = $pangram;
-
-    if !$selected-pangram.defined and $language.defined {
-        $selected-pangram = App::FontSample::SampleText.new.pangram($language);
+    if !%options<pangram>:exists
+        and $language.defined {
+        %options<pangram> =
+            App::FontSample::SampleText.new.pangram(
+                $language
+            );
     }
 
-    my $sampler = App::FontSample::PDF.new(
-        :$title,
-        :$layout,
-        :paper(App::FontSample::Paper.new(
-            :paper($paper-name),
-            :$landscape,
-            :$margin,
-        )),
-    );
+    my $sampler =
+        App::FontSample::PDF.new(
+            :$title,
+            :$layout,
+            :paper(
+                App::FontSample::Paper.new(
+                    :paper($paper-name),
+                    :$landscape,
+                    :$margin,
+                )
+            ),
+        );
 
     return $sampler.render-font(
         $font,
@@ -54,14 +52,7 @@ sub create-font-sample(
         :$family,
         :$style,
         :$output,
-        :$text,
-        :pangram($selected-pangram),
-        :$sizes,
-        :$characters,
-        :$comparison-size,
-        :$columns,
-        :$sample-size,
-        :$leading-ratio,
+        |%options,
     );
 }
 
@@ -71,47 +62,39 @@ sub create-font-collection-sample(
     Str:D :$paper = 'Letter',
     Str :$media,
     Bool:D :$landscape = False,
-    Numeric:D :$margin = 36e0,
-    Str:D :$layout = 'comparison',
+    Numeric:D :$margin = 36,
+    Str:D :$layout = 'specimen',
     Str:D :$title = 'Font Samples',
     Str :$language,
-    Str :$text,
-    Str :$pangram,
-    Positional :$sizes,
-    Str :$characters,
-    Numeric :$comparison-size,
-    Int :$columns,
-    Numeric :$sample-size,
-    Numeric :$leading-ratio,
+    *%options,
     --> IO::Path:D
 ) is export {
     my Str $paper-name = $media // $paper;
-    my Str $selected-pangram = $pangram;
 
-    if !$selected-pangram.defined and $language.defined {
-        $selected-pangram = App::FontSample::SampleText.new.pangram($language);
+    if !%options<pangram>:exists
+        and $language.defined {
+        %options<pangram> =
+            App::FontSample::SampleText.new.pangram(
+                $language
+            );
     }
 
-    my $sampler = App::FontSample::PDF.new(
-        :$title,
-        :$layout,
-        :paper(App::FontSample::Paper.new(
-            :paper($paper-name),
-            :$landscape,
-            :$margin,
-        )),
-    );
+    my $sampler =
+        App::FontSample::PDF.new(
+            :$title,
+            :$layout,
+            :paper(
+                App::FontSample::Paper.new(
+                    :paper($paper-name),
+                    :$landscape,
+                    :$margin,
+                )
+            ),
+        );
 
     return $sampler.render-collection(
         $entries,
         :$output,
-        :$text,
-        :pangram($selected-pangram),
-        :$sizes,
-        :$characters,
-        :$comparison-size,
-        :$columns,
-        :$sample-size,
-        :$leading-ratio,
+        |%options,
     );
 }
