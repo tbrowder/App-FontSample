@@ -2,7 +2,7 @@
 
 =TITLE App::FontSample
 
-=SUBTITLE Produce PDF font specimens from any PDF::Content::FontObj
+=SUBTITLE Produce PDF font specimens from any 'PDF::Content::FontObj'
 
 =head1 SYNOPSIS
 
@@ -41,7 +41,7 @@ font-sample --config=font-sample.json
 =head1 DESCRIPTION
 
 C<App::FontSample> separates font acquisition from specimen rendering. A
-library caller supplies one or more objects that do C<PDF::Content::FontObj>.
+library caller supplies one or more C<PDF::Content::FontObj> objects.
 The command-line program loads OTF or TTF files directly or reads a JSON job.
 
 The application does not require a particular font collection module.
@@ -257,18 +257,14 @@ development.
 
 Thomas Browder
 
-=end pod
+=head1 Single-page font collection
 
-=finish
-
-## Single-page font collection
-
-The `collection` layout is intended for compact comparison of a complete
+	The C<collection> layout is intended for compact comparison of a complete
 font set on one page. It defaults to 14 pt with 20 percent extra leading.
 
-With `NotoFonts-OT` installed:
+With C<NotoFonts-OT> installed:
 
-```raku
+=begin code :lang<raku>
 use NotoFonts-OT;
 use App::FontSample;
 use App::FontSample::FontEntry;
@@ -300,20 +296,20 @@ create-font-collection-sample(
     :leading-ratio(0.20),
     :output<noto-10-fonts.pdf>,
 );
-```
+end code
 
 The layout deliberately refuses to overflow the lower margin. If all
 entries cannot fit on one page, reduce `sample-size` or use the paginated
 `comparison` layout.
 
-## JSON sample definitions
+=head1 JSON sample definitions
 
-`font-sample --config=FILE` accepts either the original single-sample
-object or a multi-sample definition containing `defaults` and `samples`.
+C<font-sample --config=FILE> accepts either the original single-sample
+object or a multi-sample definition containing C<defaults> and C<samples>.
 
 The preferred multi-sample form is:
 
-```json
+=begin code :lang<json>
 {
     "defaults": {
         "paper": "Letter",
@@ -350,10 +346,10 @@ The preferred multi-sample form is:
         }
     ]
 }
-```
+=end code`
 
-Values in a sample override values from `defaults`. A `fonts` array in
-`defaults` is especially useful when several layouts are to be generated
+Values in a sample override values from C<defaults>. A C<fonts` array in
+C<defaults> is especially useful when several layouts are to be generated
 from the same font collection.
 
 All relative font paths and output paths are interpreted relative to the
@@ -361,13 +357,13 @@ JSON definition file, not the current working directory.
 
 Run all jobs with:
 
-```text
+=begine code :lang<text>
 font-sample --config=examples/font-samples.json
-```
+=end code`
 
 The original one-job form remains valid:
 
-```json
+=begin code :lng<json>
 {
     "output": "output/sample.pdf",
     "layout": "specimen",
@@ -378,4 +374,6 @@ The original one-job form remains valid:
         }
     ]
 }
-```
+=end code
+
+=end pod

@@ -8,7 +8,7 @@ App::FontSample
 SUBTITLE
 ========
 
-Produce PDF font specimens from any PDF::Content::FontObj
+Produce PDF font specimens from any 'PDF::Content::FontObj'
 
 SYNOPSIS
 ========
@@ -48,7 +48,7 @@ font-sample --config=font-sample.json
 DESCRIPTION
 ===========
 
-`App::FontSample` separates font acquisition from specimen rendering. A library caller supplies one or more objects that do `PDF::Content::FontObj`. The command-line program loads OTF or TTF files directly or reads a JSON job.
+`App::FontSample` separates font acquisition from specimen rendering. A library caller supplies one or more `PDF::Content::FontObj` objects. The command-line program loads OTF or TTF files directly or reads a JSON job.
 
 The application does not require a particular font collection module. `NotoFonts-OT`, core PDF fonts, and other font providers can all supply the font objects used by the library API.
 
@@ -261,4 +261,125 @@ AUTHOR
 ======
 
 Thomas Browder
+
+Single-page font collection
+===========================
+
+    The C<collection> layout is intended for compact comparison of a complete
+
+font set on one page. It defaults to 14 pt with 20 percent extra leading.
+
+With `NotoFonts-OT` installed:
+
+```raku
+use NotoFonts-OT;
+use App::FontSample;
+use App::FontSample::FontEntry;
+
+my @entries;
+
+for <
+    NotoSerif-Regular
+    NotoSerif-Bold
+    NotoSerif-Italic
+    NotoSerif-BoldItalic
+    NotoSans-Regular
+    NotoSans-Bold
+    NotoSans-Italic
+    NotoSans-BoldItalic
+    NotoSansMono-Regular
+    NotoSansMono-Bold
+> -> $code {
+    @entries.push: App::FontSample::FontEntry.new(
+        :name($code),
+        :font(get-loaded-font($code)),
+    );
+}
+
+create-font-collection-sample(
+    @entries,
+    :layout<collection>,
+    :sample-size(14),
+    :leading-ratio(0.20),
+    :output<noto-10-fonts.pdf>,
+);
+end code
+
+The layout deliberately refuses to overflow the lower margin. If all
+entries cannot fit on one page, reduce `sample-size` or use the paginated
+`comparison` layout.
+
+=head1 JSON sample definitions
+
+C<font-sample --config=FILE> accepts either the original single-sample
+object or a multi-sample definition containing C<defaults> and C<samples>.
+
+The preferred multi-sample form is:
+
+=begin code :lang<json>
+{
+    "defaults": {
+        "paper": "Letter",
+        "margin": 36,
+        "language": "en"
+    },
+    "samples": [
+        {
+            "output": "output/serif-waterfall.pdf",
+            "layout": "waterfall",
+            "sizes": [8, 10, 12, 14, 18, 24, 36],
+            "fonts": [
+                {
+                    "file": "fonts/NotoSerif-Regular.otf",
+                    "name": "NotoSerif-Regular"
+                }
+            ]
+        },
+        {
+            "output": "output/font-collection.pdf",
+            "layout": "collection",
+            "sample-size": 14,
+            "leading-ratio": 0.20,
+            "fonts": [
+                {
+                    "file": "fonts/NotoSerif-Regular.otf",
+                    "name": "NotoSerif-Regular"
+                },
+                {
+                    "file": "fonts/NotoSans-Regular.otf",
+                    "name": "NotoSans-Regular"
+                }
+            ]
+        }
+    ]
+}
+=end code`
+
+Values in a sample override values from C<defaults>. A C<fonts` array in
+C<defaults> is especially useful when several layouts are to be generated
+from the same font collection.
+
+All relative font paths and output paths are interpreted relative to the
+JSON definition file, not the current working directory.
+
+Run all jobs with:
+
+=begine code :lang<text>
+font-sample --config=examples/font-samples.json
+=end code`
+
+The original one-job form remains valid:
+
+=begin code :lng<json>
+{
+    "output": "output/sample.pdf",
+    "layout": "specimen",
+    "fonts": [
+        {
+            "file": "fonts/MyFont.otf",
+            "name": "My Font"
+        }
+    ]
+}
+```
 
