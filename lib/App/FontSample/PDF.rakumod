@@ -9,8 +9,7 @@ unit class App::FontSample::PDF;
 
 has App::FontSample::Paper:D $.paper = App::FontSample::Paper.new;
 has Str:D $.title = 'Font Samples';
-has App::FontSample::Layout::Specimen:D $.layout =
-    App::FontSample::Layout::Specimen.new;
+has Str $.layout  = 'specimen';
 
 method render(
     App::FontSample::FontEntry:D $entry,
@@ -21,7 +20,7 @@ method render(
     --> IO::Path:D
 ) {
     return self.render-collection(
-        [$entry],
+        $entry,
         :$output,
         :$text,
         :$pangram,
@@ -32,10 +31,10 @@ method render(
 method render-font(
     PDF::Content::FontObj:D $font,
     Str:D :$name!,
-    Str:D :$family = '',
-    Str:D :$style = 'Regular',
-    Str:D :$source = '',
     IO() :$output! where *.so,
+    Str   :$family,
+    Str:D :$style = 'Regular',
+    Str   :$source,
     Str :$text,
     Str :$pangram,
     Positional :$sizes,
@@ -71,9 +70,11 @@ method render-collection(
         $pdf.core-font: :family<Helvetica>;
 
     my %options;
-    %options<text> = $text if $text.defined;
+    %options<text>    = $text if $text.defined;
     %options<pangram> = $pangram if $pangram.defined;
-    %options<sizes> = $sizes.List if $sizes.defined;
+    %options<sizes>   = $sizes.List if $sizes.defined;
+
+    my $layout = self.layout-object;
 
     for $entries.List -> $entry {
         die 'Every collection item must be an App::FontSample::FontEntry'
@@ -81,6 +82,7 @@ method render-collection(
 
         my $page = $pdf.add-page;
         $page.media-box = $!paper.media-box;
+
 
         $!layout.render-page(
             :$pdf,
@@ -93,8 +95,19 @@ method render-collection(
     }
 
     my IO::Path $path = $output.IO; #.absolute;
-#   $path.dirname.IO.mkdir unless $path.dirname.IO.d;
     $pdf.save-as: $path.Str;
 
     return $path;
 }
+
+method layout-object() {
+    given $!layout.lc {
+        when 'specimen' {
+            return App::FontSample::Layout::Specimen.new;
+        }
+        default {
+            die "Unknown layout '$!layout'";
+        }
+    }
+}
+
