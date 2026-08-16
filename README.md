@@ -265,9 +265,7 @@ Thomas Browder
 Single-page font collection
 ===========================
 
-    The C<collection> layout is intended for compact comparison of a complete
-
-font set on one page. It defaults to 14 pt with 20 percent extra leading.
+The `collection` layout is intended for compact comparison of a complete font set on one page. It defaults to 14 pt with 20 percent extra leading.
 
 With `NotoFonts-OT` installed:
 
@@ -303,20 +301,18 @@ create-font-collection-sample(
     :leading-ratio(0.20),
     :output<noto-10-fonts.pdf>,
 );
-end code
+```
 
-The layout deliberately refuses to overflow the lower margin. If all
-entries cannot fit on one page, reduce `sample-size` or use the paginated
-`comparison` layout.
+The layout deliberately refuses to overflow the lower margin. If all entries cannot fit on one page, reduce `sample-size` or use the paginated `comparison` layout.
 
-=head1 JSON sample definitions
+JSON sample definitions
+=======================
 
-C<font-sample --config=FILE> accepts either the original single-sample
-object or a multi-sample definition containing C<defaults> and C<samples>.
+`font-sample --config=FILE` accepts either the original single-sample object or a multi-sample definition containing `defaults` and `samples`.
 
 The preferred multi-sample form is:
 
-=begin code :lang<json>
+```json
 {
     "defaults": {
         "paper": "Letter",
@@ -353,24 +349,21 @@ The preferred multi-sample form is:
         }
     ]
 }
-=end code`
+```
 
-Values in a sample override values from C<defaults>. A C<fonts` array in
-C<defaults> is especially useful when several layouts are to be generated
-from the same font collection.
+Values in a sample override values from `defaults`. A `fonts` array in `defaults` is especially useful when several layouts are to be generated from the same font collection.
 
-All relative font paths and output paths are interpreted relative to the
-JSON definition file, not the current working directory.
+All relative font paths and output paths are interpreted relative to the JSON definition file, not the current working directory.
 
 Run all jobs with:
 
-=begine code :lang<text>
+```text
 font-sample --config=examples/font-samples.json
-=end code`
+```
 
 The original one-job form remains valid:
 
-=begin code :lng<json>
+```json
 {
     "output": "output/sample.pdf",
     "layout": "specimen",

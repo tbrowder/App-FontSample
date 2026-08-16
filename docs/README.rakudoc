@@ -259,7 +259,7 @@ Thomas Browder
 
 =head1 Single-page font collection
 
-	The C<collection> layout is intended for compact comparison of a complete
+The C<collection> layout is intended for compact comparison of a complete
 font set on one page. It defaults to 14 pt with 20 percent extra leading.
 
 With C<NotoFonts-OT> installed:
@@ -296,11 +296,11 @@ create-font-collection-sample(
     :leading-ratio(0.20),
     :output<noto-10-fonts.pdf>,
 );
-end code
+=end code
 
 The layout deliberately refuses to overflow the lower margin. If all
-entries cannot fit on one page, reduce `sample-size` or use the paginated
-`comparison` layout.
+entries cannot fit on one page, reduce C<sample-size> or use the paginated
+C<comparison> layout.
 
 =head1 JSON sample definitions
 
@@ -346,9 +346,9 @@ The preferred multi-sample form is:
         }
     ]
 }
-=end code`
+=end code
 
-Values in a sample override values from C<defaults>. A C<fonts` array in
+Values in a sample override values from C<defaults>. A C<fonts> array in
 C<defaults> is especially useful when several layouts are to be generated
 from the same font collection.
 
@@ -357,13 +357,13 @@ JSON definition file, not the current working directory.
 
 Run all jobs with:
 
-=begine code :lang<text>
+=begin code :lang<text>
 font-sample --config=examples/font-samples.json
-=end code`
+=end code
 
 The original one-job form remains valid:
 
-=begin code :lng<json>
+=begin code :lang<json>
 {
     "output": "output/sample.pdf",
     "layout": "specimen",
