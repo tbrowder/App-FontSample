@@ -25,7 +25,8 @@ sub create-font-sample(
 ) is export {
     my Str $paper-name = $media // $paper;
 
-    if !%options<pangram>:exists
+    #if !%options<pangram>:exists
+    if (not %options<pangram>:exists)
         and $language.defined {
         %options<pangram> =
             App::FontSample::SampleText.new.pangram(

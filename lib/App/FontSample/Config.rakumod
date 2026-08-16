@@ -178,7 +178,8 @@ method from-data(
     }
 
     if %new<language>:exists
-        and !%new<pangram>:exists {
+        #and !%new<pangram>:exists {
+        and (not %new<pangram>:exists) {
         %new<pangram> =
             App::FontSample::SampleText.new.pangram(
                 %new<language>
