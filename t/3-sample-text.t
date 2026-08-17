@@ -1,5 +1,6 @@
 use v6.d;
 use Test;
+
 use App::FontSample::SampleText;
 
 is App::FontSample::SampleText.pangram('en'),

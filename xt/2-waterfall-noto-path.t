@@ -1,6 +1,10 @@
 use v6.d;
 use Test;
 
+use PDF::API6;
+use PDF::Content;
+use PDF::Font::Loader :load-font;
+
 use NotoFonts-OT;
 use NotoFonts-OT::FontPaths;
 
@@ -9,8 +13,9 @@ use App::FontSample::Layout;
 
 my $debug = 1;
 
-my $code = "NotoSerif-Regular";
-my $font = get-loaded-font $code;
+my $code = "NotoSans-Regular";
+my $font-path = get-font-path $code;
+my $font = load-font :file($font-path);
 
 my $output = "waterfall-$code.pdf".IO;
 

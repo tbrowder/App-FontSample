@@ -25,10 +25,10 @@ for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $key {
     # key is a font name, get the font path
 
 #   #*=begin comment
-    my IO::Path $path = get-font-path $key;
-    isa-ok $path, IO::Path, "'$path' is an IO::Path object";
-    say "font path: $path";
-    say $path.e;
+    my IO::Path $font-path = get-font-path $key;
+    isa-ok $font-path, IO::Path, "'$font-path' is an IO::Path object";
+    say "font path: $font-path";
+    say $font-path.e;
 
     my $loaded-font = get-loaded-font $key;
     isa-ok $loaded-font, PDF::Content::FontObj;

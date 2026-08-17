@@ -2,6 +2,7 @@ use v6.d;
 use App::FontSample::PDF;
 use App::FontSample::FontEntry;
 
+use NotoFonts-OT;
 use NotoFonts-OT::FontPaths;
 
 # Adjust these calls if the provider's final public API uses different names.

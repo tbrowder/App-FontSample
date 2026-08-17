@@ -1,5 +1,6 @@
 use v6.d; 
 use Test; 
+
 use PDF::API6; 
 use App::FontSample;
 
@@ -8,22 +9,23 @@ note "\$debug is on" if $debug;
 
 my $pdf = PDF::API6.new;
 my $font = $pdf.core-font: :family<Helvetica>;
+
 my $dir = $*TMPDIR.add("app-fontsample-$*PID");
 $dir.mkdir;
 my $output = $dir.add('sample.pdf');
 
-my $path = create-font-sample(
+my $opath = create-font-sample(
     $font,
     :name<Helvetica>,
     :output($output),
 );
 
 if $debug {
-    say "DEBUG: See PDF file '$path'";
+    say "DEBUG: See PDF file '$opath'";
 }
 
-ok $path.f, 'sample PDF was created';
-ok $path.s > 0, 'sample PDF is not empty';
+ok $opath.f, 'sample PDF was created';
+ok $opath.s > 0, 'sample PDF is not empty';
 
 LEAVE {
     unless $debug {

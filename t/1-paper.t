@@ -1,5 +1,6 @@
 use v6.d;
 use Test;
+
 use App::FontSample::Paper;
 
 # dimens in PS points
