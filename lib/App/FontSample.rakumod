@@ -34,7 +34,8 @@ sub create-font-sample(
         and $language.defined {
         %options<pangram> =
             App::FontSample::SampleText.new.pangram(
-                $language
+                $language,
+                :$debug,
             );
     }
 
@@ -94,6 +95,7 @@ sub create-font-collection-sample(
     );
 
     note "DEBUG 3: about to enter pangram check" if $debug;
+
     if (not %render-options<pangram>:exists)
         and $language.defined {
         %render-options<pangram> =
@@ -109,18 +111,6 @@ sub create-font-collection-sample(
         :$layout,
         :$debug,
         :paper($paper-object),
-
-        =begin comment
-        :paper(
-            App::FontSample::Paper.new(
-                :paper($paper-name),
-                :$landscape,
-                :$margin,
-                :$debug,
-            )
-        ),
-        =end comment
-
     );
 
     note "DEBUG 6: about to call for sampler rendering" if $debug;
