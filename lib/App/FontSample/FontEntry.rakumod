@@ -12,7 +12,7 @@ has                         $.debug = 0;
 
 submethod TWEAK {
     if $!debug {
-        note "DEBUG 0: inside class construction for '$!name'...";
+        note "DEBUG 2: inside class construction for '$!name'...";
     }
 }
 

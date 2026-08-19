@@ -17,21 +17,25 @@ has $.debug = 0;
 
 submethod TWEAK {
     if $!debug {
-        note "DEBUG 0: generating PDF file '$!title'";
+        note "DEBUG 8: generating PDF file '$!title'";
     }
 }
 
 method render(
     App::FontSample::FontEntry:D $entry,
     IO() :$output! where *.so,
+    :$debug,
     *%options,
     --> IO::Path:D
 ) {
-    return self.render-collection(
+    my $collection-object = self.render-collection(
         [$entry],
         :$output,
+        :$debug,
         |%options,
     );
+
+    return $collection-object;
 }
 
 method render-font(
@@ -41,23 +45,28 @@ method render-font(
     Str :$family,
     Str:D :$style = 'Regular',
     Str :$source,
+    :$debug,
     *%options,
     --> IO::Path:D
 ) {
-    my $entry =
-        App::FontSample::FontEntry.new(
-            :$name,
-            :$font,
-            :family($family // ''),
-            :$style,
-            :source($source // ''),
-        );
+    my $entry-object = App::FontSample::FontEntry.new(
+        :$name,
+        :$font,
+        :family($family // ''),
+        :$style,
+        :$debug,
+        :source($source // ''),
+    );
 
-    return self.render(
-        $entry,
+    my $render-object = self.render(
+        $entry-object,
         :$output,
+        :$debug,
         |%options,
     );
+
+    return $render-object;
+
 }
 
 method render-collection(

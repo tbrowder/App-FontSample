@@ -17,7 +17,7 @@ my $debug = 1;
 for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $code {
     # code is a font name or alias, get the loaded font
     my $font = get-loaded-font $code;
-    note "DEBUG 0: using font code '$code'" if $debug;
+    note "DEBUG 1: using font code '$code'" if $debug;
     @entries.push: App::FontSample::FontEntry.new(
         :name($code),
         :$font,
@@ -26,7 +26,7 @@ for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $code {
 }
 
 # the called sub is in file App/FontSample.rakumod
-note "DEBUG 0: calling for the collection" if $debug;
+note "DEBUG 3: calling for the collection" if $debug;
 my $output = create-font-collection-sample(
     @entries,
     :layout<collections>,

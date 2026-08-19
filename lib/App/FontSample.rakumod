@@ -25,7 +25,7 @@ sub create-font-sample(
     --> IO::Path:D
 ) is export {
 
-    note "DEBUG 0: start" if $debug;
+    note "DEBUG 2: start" if $debug;
 
     my Str $paper-name = $media // $paper;
 
@@ -93,7 +93,7 @@ sub create-font-collection-sample(
         :$debug,
     );
 
-    note "DEBUG 1: about to enter pangram check" if $debug;
+    note "DEBUG 3: about to enter pangram check" if $debug;
     if (not %render-options<pangram>:exists)
         and $language.defined {
         %render-options<pangram> =
@@ -103,7 +103,7 @@ sub create-font-collection-sample(
             );
     }
 
-    note "DEBUG 1: about to enter sample PDF generation" if $debug;
+    note "DEBUG 4: about to enter sample PDF generation" if $debug;
     my $sampler = App::FontSample::PDF.new(
         :$title,
         :$layout,
@@ -123,7 +123,7 @@ sub create-font-collection-sample(
 
     );
 
-    note "DEBUG 0: about to call for sampler rendering" if $debug;
+    note "DEBUG 6: about to call for sampler rendering" if $debug;
     
     my $result = $sampler.render-collection(
         @entries,
