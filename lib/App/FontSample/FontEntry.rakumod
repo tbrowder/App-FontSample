@@ -8,6 +8,14 @@ has PDF::Content::FontObj:D $.font is required;
 has Str:D                   $.family = '';
 has Str:D                   $.style = 'Regular';
 has Str:D                   $.source = '';
+has                         $.debug = 0;
+
+submethod TWEAK {
+    if $!debug {
+        note "DEBUG 0: inside class construction for '$!name'...";
+    }
+}
+
 
 method display-name(--> Str:D) {
     my @parts;

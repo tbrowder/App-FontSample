@@ -1,26 +1,40 @@
+#!/usr/bin/env raku
+
 use v6.d;
-use App::FontSample::PDF;
-use App::FontSample::FontEntry;
 
 use NotoFonts-OT;
 use NotoFonts-OT::FontPaths;
 
+use App::FontSample;
+use App::FontSample::PDF;
+use App::FontSample::FontEntry;
+
+
 # Adjust these calls if the provider's final public API uses different names.
-my $provider = NotoFonts-OT::FontPaths; 
 my @entries;
 
-for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $key {
-    # key is a font name, get the font path
-    my $font = get-font-path $key;
+my $debug = 1;
+for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $code {
+    # code is a font name or alias, get the loaded font
+    my $font = get-loaded-font $code;
+    note "DEBUG 0: using font code '$code'" if $debug;
     @entries.push: App::FontSample::FontEntry.new(
-        :name($key),
-        #:font($provider.font($key)),
+        :name($code),
         :$font,
+        :$debug,
     );
 }
 
-my $sampler = App::FontSample::PDF.new;
-$sampler.render-collection(
+# the called sub is in file App/FontSample.rakumod
+note "DEBUG 0: calling for the collection" if $debug;
+my $output = create-font-collection-sample(
     @entries,
-    :output<noto-samples.pdf>,
+    :layout<collections>,
+    :title<NotoFonts-OT Font Collection>,
+    :sample-size(14),
+    :leading-ratio(0.20),
+    :output<noto-font-collection.pdf>,
+    :$debug,
 );
+
+say "Created '$output'";

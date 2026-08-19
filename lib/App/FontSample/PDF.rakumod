@@ -13,6 +13,14 @@ has App::FontSample::Paper:D $.paper =
 has Str:D $.title = 'Font Samples';
 has Str:D $.layout = 'specimen';
 
+has $.debug = 0;
+
+submethod TWEAK {
+    if $!debug {
+        note "DEBUG 0: generating PDF file '$!title'";
+    }
+}
+
 method render(
     App::FontSample::FontEntry:D $entry,
     IO() :$output! where *.so,

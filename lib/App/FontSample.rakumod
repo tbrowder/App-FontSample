@@ -20,9 +20,13 @@ sub create-font-sample(
     Str:D :$layout = 'specimen',
     Str:D :$title = 'Font Samples',
     Str :$language,
+    :$debug,
     *%options,
     --> IO::Path:D
 ) is export {
+
+    note "DEBUG 0: start" if $debug;
+
     my Str $paper-name = $media // $paper;
 
     #if !%options<pangram>:exists
@@ -38,14 +42,18 @@ sub create-font-sample(
         App::FontSample::PDF.new(
             :$title,
             :$layout,
+            :$debug,
             :paper(
                 App::FontSample::Paper.new(
                     :paper($paper-name),
                     :$landscape,
                     :$margin,
+                    :$debug,
                 )
             ),
         );
+
+    note "DEBUG 0: about to call render-font" if $debug;
 
     return $sampler.render-font(
         $font,
@@ -53,12 +61,13 @@ sub create-font-sample(
         :$family,
         :$style,
         :$output,
+        :$debug,
         |%options,
     );
 }
 
 sub create-font-collection-sample(
-    Positional:D $entries where *.elems > 0,
+    Positional:D @entries where *.elems > 0,
     IO() :$output! where *.so,
     Str:D :$paper = 'Letter',
     Str :$media,
@@ -67,35 +76,46 @@ sub create-font-collection-sample(
     Str:D :$layout = 'specimen',
     Str:D :$title = 'Font Samples',
     Str :$language,
+    :$debug,
     *%options,
     --> IO::Path:D
 ) is export {
-    my Str $paper-name = $media // $paper;
 
-    if !%options<pangram>:exists
+    note "DEBUG 1: starting the collection" if $debug;
+
+    my Str $paper-name = $media // $paper;
+    my %render-options = %options.Hash;
+
+    note "DEBUG 1: about to enter pangram check" if $debug;
+    if (not %render-options<pangram>:exists)
         and $language.defined {
-        %options<pangram> =
-            App::FontSample::SampleText.new.pangram(
-                $language
+        %render-options<pangram> =
+            App::FontSample::SampleText.pangram(
+                $language,
+                :$debug,
             );
     }
 
-    my $sampler =
-        App::FontSample::PDF.new(
-            :$title,
-            :$layout,
-            :paper(
-                App::FontSample::Paper.new(
-                    :paper($paper-name),
-                    :$landscape,
-                    :$margin,
-                )
-            ),
-        );
+    note "DEBUG 1: about to enter sample PDF generation" if $debug;
+    my $sampler = App::FontSample::PDF.new(
+        :$title,
+        :$layout,
+        :$debug,
+        :paper(
+            App::FontSample::Paper.new(
+                :paper($paper-name),
+                :$landscape,
+                :$margin,
+                :$debug,
+            )
+        ),
+    );
 
+    note "DEBUG 0: about to call for sampler rendering" if $debug;
     return $sampler.render-collection(
-        $entries,
+        @entries,
         :$output,
-        |%options,
+        :$debug,
+        |%render-options,
     );
 }
