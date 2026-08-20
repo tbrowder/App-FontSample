@@ -60,4 +60,3 @@ $sampler.render-collection(
     :output<noto-samples.pdf>,
 );
 
-

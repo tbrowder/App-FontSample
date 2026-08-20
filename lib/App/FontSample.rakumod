@@ -68,7 +68,7 @@ sub create-font-sample(
 }
 
 sub create-font-collection-sample(
-    Positional:D @entries where *.elems > 0,
+    @entries where *.elems > 0,
     IO() :$output! where *.so,
     Str:D :$paper = 'Letter',
     Str :$media,

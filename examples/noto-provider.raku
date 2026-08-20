@@ -29,7 +29,12 @@ for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $code {
 note "DEBUG 3: calling for the collection" if $debug;
 my $output = create-font-collection-sample(
     @entries,
-    :layout<collections>,
+
+    # choose one of three:
+#   #:layout<collections>, # NYI 
+    :layout<specimen>,
+#   :layout<waterdall>,
+
     :title<NotoFonts-OT Font Collection>,
     :sample-size(14),
     :leading-ratio(0.20),
