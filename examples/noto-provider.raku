@@ -3,7 +3,7 @@
 use v6.d;
 
 use NotoFonts-OT;
-use NotoFonts-OT::FontPaths;
+#use NotoFonts-OT::FontPaths;
 
 use App::FontSample;
 use App::FontSample::PDF;
@@ -35,7 +35,7 @@ my $output = create-font-collection-sample(
     :layout<specimen>,
 #   :layout<waterdall>,
 
-    :title<NotoFonts-OT Font Collection>,
+    :title("NotoFonts-OT Font Collection"),
     :sample-size(14),
     :leading-ratio(0.20),
     :output<noto-font-collection.pdf>,
