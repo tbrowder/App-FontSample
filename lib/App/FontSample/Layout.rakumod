@@ -8,6 +8,7 @@ method render-page(
     :$entry!,
     :$paper!,
     :$label-font!,
+    :$debug,
     :%options!,
     --> Nil
 ) { ... }

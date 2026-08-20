@@ -22,6 +22,13 @@ has Numeric $.leading-ratio;
 has Int $.columns;
 has List:D $.sizes = ();
 has List:D $.fonts is required;
+has $.debug;
+
+submethod TWEAK {
+    if $!debug {
+        note "DEBUG ?: generating PDF file '$!title'";
+    }
+}
 
 method from-file(
     IO() $file

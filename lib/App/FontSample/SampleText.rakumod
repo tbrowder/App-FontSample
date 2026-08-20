@@ -2,6 +2,14 @@ use v6.d;
 
 unit class App::FontSample::SampleText;
 
+has $.debug;
+
+submethod TWEAK {
+    if $!debug {
+        note "DEBUG ?: generating SampleText object";
+    }
+}
+
 my %pangram =
     en => 'The quick brown fox jumps over the lazy dog.';
 

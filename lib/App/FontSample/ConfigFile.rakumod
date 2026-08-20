@@ -7,6 +7,13 @@ unit class App::FontSample::ConfigFile;
 has IO::Path:D $.source-file is required;
 has IO::Path:D $.base-dir is required;
 has List:D $.samples is required;
+has $.debug;
+
+submethod TWEAK {
+    if $!debug {
+        note "DEBUG ?: generating Configfile object";
+    }
+}
 
 method from-file(
     IO() $file
