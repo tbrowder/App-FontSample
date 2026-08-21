@@ -4,69 +4,58 @@ use PDF::Content::FontObj;
 use App::FontSample::Paper;
 use App::FontSample::FontEntry;
 use App::FontSample::Layout::Specimen;
+use App::FontSample::Layout::Collection;
 
 unit class App::FontSample::PDF;
 
 has App::FontSample::Paper:D $.paper =
     App::FontSample::Paper.new;
 
-has Str:D $.title = 'Font Samples';
-has Str:D $.layout = 'specimen';
-
-has $.debug = 0;
-
-submethod TWEAK {
-    if $!debug {
-        note "DEBUG 8: generating PDF file '$!title'";
-    }
-}
+has Str:D  $.title = 'Font Samples';
+has Str:D  $.layout = 'specimen';
+has        $.debug = 0;
 
 method render(
     App::FontSample::FontEntry:D $entry,
     IO() :$output! where *.so,
-    :$debug,
     *%options,
     --> IO::Path:D
 ) {
-    my $collection-object = self.render-collection(
-        [$entry],
+    my @entries;
+    @entries.push: $entry;
+
+    return self.render-collection(
+        @entries,
         :$output,
-        :$debug,
         |%options,
     );
-
-    return $collection-object;
 }
 
 method render-font(
     PDF::Content::FontObj:D $font,
     Str:D :$name!,
     IO() :$output! where *.so,
-    Str :$family,
-    Str:D :$style = 'Regular',
-    Str :$source,
-    :$debug,
+    Str:D :$family = '',
+    Str:D :$style = '',
+    Str:D :$source = '',
     *%options,
     --> IO::Path:D
 ) {
-    my $entry-object = App::FontSample::FontEntry.new(
-        :$name,
-        :$font,
-        :family($family // ''),
-        :$style,
-        :$debug,
-        :source($source // ''),
-    );
+    my $entry =
+        App::FontSample::FontEntry.new(
+            :$name,
+            :$font,
+            :$family,
+            :$style,
+            :$source,
+            :debug($!debug),
+        );
 
-    my $render-object = self.render(
-        $entry-object,
+    return self.render(
+        $entry,
         :$output,
-        :$debug,
         |%options,
     );
-
-    return $render-object;
-
 }
 
 method render-collection(
@@ -75,33 +64,44 @@ method render-collection(
     *%options,
     --> IO::Path:D
 ) {
+    note "render-collection: starting"
+        if $!debug;
+
     my PDF::API6 $pdf .= new;
 
     my PDF::Content::FontObj $label-font =
         $pdf.core-font: :family<Helvetica>;
 
-    my $layout = self.layout-object;
+    my $layout =
+        self.layout-object;
 
-    for $entries.List -> $entry {
-        die 'Every collection item must be an App::FontSample::FontEntry'
-            unless $entry ~~ App::FontSample::FontEntry;
+    my %render-options =
+        %options.Hash;
 
-        my $page = $pdf.add-page;
-        $page.media-box = $!paper.media-box;
+    %render-options<title> = $!title
+        unless %render-options<title>:exists;
 
-        $layout.render-page(
-            :$pdf,
-            :$page,
-            :$entry,
-            :paper($!paper),
-            :$label-font,
-            :options(%options),
-        );
-    }
+    note "render-collection: using {$layout.^name}"
+        if $!debug;
 
-    my IO::Path $path = $output.IO;
+    $layout.render-collection(
+        :$pdf,
+        :$entries,
+        :paper($!paper),
+        :$label-font,
+        :options(%render-options),
+    );
+
+    my IO::Path $path =
+        $output.IO;
+
+    note "render-collection: saving '$path'"
+        if $!debug;
 
     $pdf.save-as: $path.Str;
+
+    note "render-collection: finished"
+        if $!debug;
 
     return $path;
 }
@@ -109,11 +109,20 @@ method render-collection(
 method layout-object() {
     given $!layout.lc {
         when 'specimen' {
-            return App::FontSample::Layout::Specimen.new;
+            return
+                App::FontSample::Layout::Specimen.new;
         }
+
         when 'waterfall' {
-            return App::FontSample::Layout::Specimen.new;
+            return
+                App::FontSample::Layout::Specimen.new;
         }
+
+        when 'collection' {
+            return
+                App::FontSample::Layout::Collection.new;
+        }
+
         default {
             die "Unknown layout '$!layout'";
         }

@@ -12,7 +12,7 @@
   "depends": [
     "FontConfig",
     "LibraryMake",
-    "NotoFonts-OT:ver<0.2.0>",
+    "NotoFonts-OT:ver<0.2.1>",
     "PDF::API6",
     "PDF::Content::FontObj",
     "PDF::Font::Loader",
@@ -28,6 +28,7 @@
     "App::FontSample::ConfigFile": "lib/App/FontSample/ConfigFile.rakumod",
     "App::FontSample::FontEntry": "lib/App/FontSample/FontEntry.rakumod",
     "App::FontSample::Layout": "lib/App/FontSample/Layout.rakumod",
+    "App::FontSample::Layout::Collection": "lib/App/FontSample/Layout/Collection.rakumod",
     "App::FontSample::Layout::Specimen": "lib/App/FontSample/Layout/Specimen.rakumod",
     "App::FontSample::PDF": "lib/App/FontSample/PDF.rakumod",
     "App::FontSample::Paper": "lib/App/FontSample/Paper.rakumod",

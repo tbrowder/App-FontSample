@@ -4,7 +4,7 @@ use Test;
 use PDF::API6; 
 use App::FontSample;
 
-my $debug = 1;
+my $debug = True;
 note "\$debug is on" if $debug;
 
 my $pdf = PDF::API6.new;
@@ -33,6 +33,5 @@ LEAVE {
         $dir.rmdir if $dir.d;
     }
 }
-
 
 done-testing;

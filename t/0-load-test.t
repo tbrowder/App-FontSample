@@ -7,7 +7,7 @@ my @modules = <
     App::FontSample::FontEntry
     App::FontSample::Layout
     App::FontSample::Layout::Specimen
-    App::FontSample::Provider
+    App::FontSample::Layout::Collection
     App::FontSample::SampleText
     App::FontSample::Config
     App::FontSample::ConfigFile

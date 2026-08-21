@@ -16,7 +16,7 @@ sub create-font-sample(
     Bool:D :$landscape = False,
     Numeric:D :$margin = 36,
     Str:D :$family = '',
-    Str:D :$style = 'Regular',
+    Str:D :$style = '',
     Str:D :$layout = 'specimen',
     Str:D :$title = 'Font Samples',
     Str :$language,

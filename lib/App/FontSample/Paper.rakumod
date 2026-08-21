@@ -10,13 +10,7 @@ my constant %PAPER = %(
 has Str:D     $.paper     = 'Letter';
 has Bool:D    $.landscape = False;
 has Numeric:D $.margin    = 36;
-has $.debug;
-
-submethod TWEAK {
-    if $!debug {
-        note "DEBUG ?: generating a Paper object";
-    }
-}
+has        $.debug = 0;
 
 method width(--> Int:D) {
     return $!landscape
