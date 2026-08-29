@@ -3,7 +3,7 @@
 use v6.d;
 
 use NotoFonts-OT;
-use NotoFonts-OT::FilePaths;
+#use NotoFonts-OT::FilePaths;
 
 use App::FontSample;
 use App::FontSample::FontEntry;

@@ -1,5 +1,8 @@
 use v6.d;
+
 use PDF::Content::FontObj;
+use NotoFonts-OT;
+
 use App::FontSample::PDF;
 use App::FontSample::Paper;
 use App::FontSample::FontEntry;

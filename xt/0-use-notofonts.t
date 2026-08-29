@@ -9,14 +9,14 @@ use PDF::Content::FontObj;
 use PDF::Lite;
 
 use NotoFonts-OT;
-use NotoFonts-OT::FontPaths;
+#use NotoFonts-OT::FontPaths;
 
 use App::FontSample::PDF;
 use App::FontSample::FontEntry;
 
 # Adjust these calls if the provider's final public API uses different names.
 #my $provider = NotoFonts-OT::FontPaths; 
-my $provider = NotoFonts-OT;
+#my $provider = NotoFonts-OT;
 my @entries;
 
 for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $key {
@@ -40,13 +40,13 @@ for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $key {
     say "stdout: $out";
     say "stderr: $err";
 
-    #=begin comment
+    =begin comment
     @entries.push: App::FontSample::FontEntry.new(
         :name($key),
         :font(get-loaded-font($key)),
         #:$font,
     );
-    #=end comment
+    =end comment
 
 }
 

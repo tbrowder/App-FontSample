@@ -6,7 +6,7 @@ use PDF::Content;
 use PDF::Font::Loader :load-font;
 
 use NotoFonts-OT;
-use NotoFonts-OT::FontPaths;
+#use NotoFonts-OT::FontPaths;
 
 use App::FontSample;
 use App::FontSample::Layout;

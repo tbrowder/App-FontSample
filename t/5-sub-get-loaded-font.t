@@ -1,6 +1,7 @@
 use Test;
 
-use NotoFonts-OT::FontPaths;;
+#use NotoFonts-OT::FontPaths;;
+use NotoFonts-OT;
 
 use App::FontSample;
 

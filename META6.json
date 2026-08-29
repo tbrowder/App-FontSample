@@ -12,7 +12,7 @@
   "depends": [
     "FontConfig",
     "LibraryMake",
-    "NotoFonts-OT:ver<0.2.1>",
+    "NotoFonts-OT:ver<0.3.0>",
     "PDF::API6",
     "PDF::Content::FontObj",
     "PDF::Font::Loader",

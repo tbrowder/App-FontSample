@@ -2,7 +2,7 @@ use v6.d;
 use Test;
 
 use NotoFonts-OT;
-use NotoFonts-OT::FontPaths;
+#use NotoFonts-OT::FontPaths;
 
 use App::FontSample;
 use App::FontSample::Layout;
