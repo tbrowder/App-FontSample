@@ -1,0 +1,19 @@
+noto-integration:
+  runs-on: ubuntu-latest
+
+  steps:
+    - uses: actions/checkout@v7
+
+    # Install Rakudo here using normal method
+
+    - name: Install App::FontSample dependencies
+      run: zef install --deps-only .
+
+    - name: Install optional Noto provider
+      run: zef install NotoFonts-OT
+
+    - name: Test Noto integration
+      run: |
+        raku -Ilib xt/0-use-notofonts.t
+        raku -Ilib xt/0-waterfall-noto.t
+     
