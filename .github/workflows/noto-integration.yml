@@ -1,4 +1,4 @@
-noto-integration:
+noto-fonts:
   runs-on: ubuntu-latest
 
   steps:
