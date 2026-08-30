@@ -1,5 +1,6 @@
 #!/usr/bin/env raku
 use v6.d;
+
 use App::FontSample::Config;
 use App::FontSample::ConfigFile;
 use App::FontSample::FontEntry;
@@ -27,7 +28,8 @@ sub usage(Int:D $status = 0 --> Nil) {
       --name=TEXT          Display name; defaults to font filename
       --family=TEXT        Font family metadata
       --style=TEXT         Font style; default: Regular
-      --layout=NAME        specimen, waterfall, comparison, characters, collection
+      --layout=NAME        specimen, waterfall, comparison,
+                           characters, collection
       --paper=Letter|A4    Paper size; default: Letter
       --landscape          Use landscape orientation
       --margin=POINTS      Margin in PDF points; default: 36
@@ -38,8 +40,8 @@ sub usage(Int:D $status = 0 --> Nil) {
       --characters=TEXT    Characters used by characters layout
       --columns=N          Columns used by characters layout
       --comparison-size=N  Point size used by comparison layout
-      --sample-size=N      Point size used by collection layout; default 14
-      --leading-ratio=N    Extra line spacing ratio; default 0.20
+      --sample-size=N      Point size used by collection layout
+      --leading-ratio=N    Extra collection line-spacing ratio
       --languages          List built-in language codes
       --help               Show this help
     END
@@ -78,7 +80,8 @@ if %options<config>:exists {
 }
 
 for <font output> -> $required {
-    unless %options{$required}:exists and %options{$required}.chars {
+    unless %options{$required}:exists
+        and %options{$required}.chars {
         $*ERR.say: "Missing required option --$required";
         usage 2;
     }
@@ -116,19 +119,21 @@ sub render-config(
             :$font,
             :$name,
             :family(%font-data<family> // ''),
-            :style(%font-data<style> // 'Regular'),
+            :style(%font-data<style> // ''),
             :source(%font-data<source> // $file.Str),
         );
     }
 
+    my $paper = App::FontSample::Paper.new(
+        :paper($config.paper),
+        :landscape($config.landscape),
+        :margin($config.margin),
+    );
+
     my $sampler = App::FontSample::PDF.new(
         :title($config.title),
         :layout($config.layout),
-        :paper(App::FontSample::Paper.new(
-            :name($config.paper),
-            :landscape($config.landscape),
-            :margin($config.margin),
-        )),
+        :paper($paper),
     );
 
     my %render-options =
@@ -161,70 +166,104 @@ sub render-config(
     %render-options<columns> = $config.columns
         if $config.columns.defined;
 
-    my $output =
-        $sampler.render-collection(
-            @entries,
-            |%render-options,
-        );
+    my $output = $sampler.render-collection(
+        @entries,
+        |%render-options,
+    );
 
     say "Created $output";
 }
 
 sub render-direct-options(%options --> Nil) {
     my IO::Path $font-file = %options<font>.IO;
-    die "Font file does not exist: $font-file" unless $font-file.f;
+
+    die "Font file does not exist: $font-file"
+        unless $font-file.f;
 
     my $font = load-font :file($font-file.Str);
-    my Str $name = %options<name> // $font-file.basename;
-    my Str $paper-name = %options<paper> // 'Letter';
-    my Numeric $margin = (%options<margin> // 36).Numeric;
-    my Str $layout = %options<layout> // 'specimen';
+    my Str $name =
+        %options<name> // $font-file.basename;
+
+    my Str $paper-name =
+        %options<paper> // 'Letter';
+
+    my Numeric $margin =
+        (%options<margin> // 36).Numeric;
+
+    my Str $layout =
+        %options<layout> // 'specimen';
+
     my @sizes;
 
     if %options<sizes>:exists {
         for %options<sizes>.split(',') -> $item {
             my Numeric $size = $item.Numeric;
-            die 'Every size must be greater than zero' unless $size > 0;
+
+            die 'Every size must be greater than zero'
+                unless $size > 0;
+
             @sizes.push: $size;
         }
     }
 
     my Str $pangram = %options<pangram>;
-    if !$pangram.defined and %options<language>:exists {
+
+    if (not $pangram.defined)
+        and %options<language>:exists {
         $pangram = App::FontSample::SampleText.new.pangram(
             %options<language>
         );
     }
 
+    my $paper = App::FontSample::Paper.new(
+        :paper($paper-name),
+        :landscape(%options<landscape> // False),
+        :$margin,
+    );
+
     my $sampler = App::FontSample::PDF.new(
         :$layout,
-        :paper(App::FontSample::Paper.new(
-            :name($paper-name),
-            :landscape(%options<landscape> // False),
-            :$margin,
-        )),
+        :paper($paper),
     );
 
     my %render-options =
         name   => $name,
         family => (%options<family> // ''),
-        style  => (%options<style> // 'Regular'),
+        style  => (%options<style> // ''),
         output => %options<output>;
 
-    %render-options<text> = %options<text> if %options<text>:exists;
-    %render-options<pangram> = $pangram if $pangram.defined;
-    %render-options<sizes> = @sizes if @sizes.elems;
+    %render-options<text> = %options<text>
+        if %options<text>:exists;
+
+    %render-options<pangram> = $pangram
+        if $pangram.defined;
+
+    %render-options<sizes> = @sizes
+        if @sizes.elems;
+
     %render-options<characters> = %options<characters>
         if %options<characters>:exists;
+
     %render-options<columns> = %options<columns>.Int
         if %options<columns>:exists;
-    %render-options<comparison-size> = %options<comparison-size>.Numeric
+
+    %render-options<comparison-size> =
+        %options<comparison-size>.Numeric
         if %options<comparison-size>:exists;
-    %render-options<sample-size> = %options<sample-size>.Numeric
+
+    %render-options<sample-size> =
+        %options<sample-size>.Numeric
         if %options<sample-size>:exists;
-    %render-options<leading-ratio> = %options<leading-ratio>.Numeric
+
+    %render-options<leading-ratio> =
+        %options<leading-ratio>.Numeric
         if %options<leading-ratio>:exists;
 
-    my $output = $sampler.render-font($font, |%render-options);
+    my $output =
+        $sampler.render-font(
+            $font,
+            |%render-options,
+        );
+
     say "Created $output";
 }

@@ -1,7 +1,6 @@
 use v6.d;
 
 use PDF::Content::FontObj;
-use NotoFonts-OT;
 
 use App::FontSample::PDF;
 use App::FontSample::Paper;
@@ -27,12 +26,10 @@ sub create-font-sample(
     *%options,
     --> IO::Path:D
 ) is export {
-
-    note "DEBUG 2: start" if $debug;
+    note 'create-font-sample: start' if $debug;
 
     my Str $paper-name = $media // $paper;
 
-    #if !%options<pangram>:exists
     if (not %options<pangram>:exists)
         and $language.defined {
         %options<pangram> =
@@ -42,22 +39,21 @@ sub create-font-sample(
             );
     }
 
-    my $sampler =
-        App::FontSample::PDF.new(
-            :$title,
-            :$layout,
-            :$debug,
-            :paper(
-                App::FontSample::Paper.new(
-                    :paper($paper-name),
-                    :$landscape,
-                    :$margin,
-                    :$debug,
-                )
-            ),
-        );
+    my $paper-object = App::FontSample::Paper.new(
+        :paper($paper-name),
+        :$landscape,
+        :$margin,
+        :$debug,
+    );
 
-    note "DEBUG 0: about to call render-font" if $debug;
+    my $sampler = App::FontSample::PDF.new(
+        :$title,
+        :$layout,
+        :$debug,
+        :paper($paper-object),
+    );
+
+    note 'create-font-sample: rendering' if $debug;
 
     return $sampler.render-font(
         $font,
@@ -77,18 +73,26 @@ sub create-font-collection-sample(
     Str :$media,
     Bool:D :$landscape = False,
     Numeric:D :$margin = 36,
-    Str:D :$layout = 'specimen',
+    Str:D :$layout = 'comparison',
     Str:D :$title = 'Font Samples',
     Str :$language,
     :$debug,
     *%options,
     --> IO::Path:D
 ) is export {
-
-    note "DEBUG 1: starting the collection" if $debug;
+    note 'create-font-collection-sample: start' if $debug;
 
     my Str $paper-name = $media // $paper;
     my %render-options = %options.Hash;
+
+    if (not %render-options<pangram>:exists)
+        and $language.defined {
+        %render-options<pangram> =
+            App::FontSample::SampleText.new.pangram(
+                $language,
+                :$debug,
+            );
+    }
 
     my $paper-object = App::FontSample::Paper.new(
         :paper($paper-name),
@@ -97,18 +101,6 @@ sub create-font-collection-sample(
         :$debug,
     );
 
-    note "DEBUG 3: about to enter pangram check" if $debug;
-
-    if (not %render-options<pangram>:exists)
-        and $language.defined {
-        %render-options<pangram> =
-            App::FontSample::SampleText.pangram(
-                $language,
-                :$debug,
-            );
-    }
-
-    note "DEBUG 4: about to enter sample PDF generation" if $debug;
     my $sampler = App::FontSample::PDF.new(
         :$title,
         :$layout,
@@ -116,14 +108,12 @@ sub create-font-collection-sample(
         :paper($paper-object),
     );
 
-    note "DEBUG 6: about to call for sampler rendering" if $debug;
-    
-    my $result = $sampler.render-collection(
+    note 'create-font-collection-sample: rendering' if $debug;
+
+    return $sampler.render-collection(
         @entries,
         :$output,
         :$debug,
         |%render-options,
     );
-
-    return $result;
 }

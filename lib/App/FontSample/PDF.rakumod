@@ -5,15 +5,17 @@ use App::FontSample::Paper;
 use App::FontSample::FontEntry;
 use App::FontSample::Layout::Specimen;
 use App::FontSample::Layout::Collection;
+use App::FontSample::Layout::Comparison;
+use App::FontSample::Layout::Characters;
 
 unit class App::FontSample::PDF;
 
 has App::FontSample::Paper:D $.paper =
     App::FontSample::Paper.new;
 
-has Str:D  $.title = 'Font Samples';
-has Str:D  $.layout = 'specimen';
-has        $.debug = 0;
+has Str:D $.title = 'Font Samples';
+has Str:D $.layout = 'specimen';
+has $.debug = 0;
 
 method render(
     App::FontSample::FontEntry:D $entry,
@@ -41,15 +43,14 @@ method render-font(
     *%options,
     --> IO::Path:D
 ) {
-    my $entry =
-        App::FontSample::FontEntry.new(
-            :$name,
-            :$font,
-            :$family,
-            :$style,
-            :$source,
-            :debug($!debug),
-        );
+    my $entry = App::FontSample::FontEntry.new(
+        :$name,
+        :$font,
+        :$family,
+        :$style,
+        :$source,
+        :debug($!debug),
+    );
 
     return self.render(
         $entry,
@@ -64,7 +65,7 @@ method render-collection(
     *%options,
     --> IO::Path:D
 ) {
-    note "render-collection: starting"
+    note 'render-collection: starting'
         if $!debug;
 
     my PDF::API6 $pdf .= new;
@@ -72,11 +73,8 @@ method render-collection(
     my PDF::Content::FontObj $label-font =
         $pdf.core-font: :family<Helvetica>;
 
-    my $layout =
-        self.layout-object;
-
-    my %render-options =
-        %options.Hash;
+    my $layout = self.layout-object;
+    my %render-options = %options.Hash;
 
     %render-options<title> = $!title
         unless %render-options<title>:exists;
@@ -92,15 +90,14 @@ method render-collection(
         :options(%render-options),
     );
 
-    my IO::Path $path =
-        $output.IO;
+    my IO::Path $path = $output.IO;
 
     note "render-collection: saving '$path'"
         if $!debug;
 
     $pdf.save-as: $path.Str;
 
-    note "render-collection: finished"
+    note 'render-collection: finished'
         if $!debug;
 
     return $path;
@@ -109,20 +106,20 @@ method render-collection(
 method layout-object() {
     given $!layout.lc {
         when 'specimen' {
-            return
-                App::FontSample::Layout::Specimen.new;
+            return App::FontSample::Layout::Specimen.new;
         }
-
         when 'waterfall' {
-            return
-                App::FontSample::Layout::Specimen.new;
+            return App::FontSample::Layout::Specimen.new;
         }
-
         when 'collection' {
-            return
-                App::FontSample::Layout::Collection.new;
+            return App::FontSample::Layout::Collection.new;
         }
-
+        when 'comparison' {
+            return App::FontSample::Layout::Comparison.new;
+        }
+        when 'characters' {
+            return App::FontSample::Layout::Characters.new;
+        }
         default {
             die "Unknown layout '$!layout'";
         }

@@ -8,6 +8,8 @@ my @modules = <
     App::FontSample::Layout
     App::FontSample::Layout::Specimen
     App::FontSample::Layout::Collection
+    App::FontSample::Layout::Comparison
+    App::FontSample::Layout::Characters
     App::FontSample::SampleText
     App::FontSample::Config
     App::FontSample::ConfigFile
