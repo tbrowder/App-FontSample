@@ -30,7 +30,7 @@ jobs:
         run: zef install --/test --test-depends --deps-only .
 
       - name: Install optional Noto provider
-        run: zef install NotoFonts-OT
+        run: zef install NotoFonts-OT --verbose
 
       - name: Test Noto integration
         run: |
