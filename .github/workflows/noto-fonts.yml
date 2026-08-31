@@ -23,8 +23,13 @@ jobs:
         with:
           raku-version: ${{ matrix.raku-version }}
 
-      - name: Install fontconfig
-        run: sudo apt-get install libfontconfig1-dev
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+               libfontconfig1-dev \
+               libfreetyp6-dev    \
+               libharfbuzz-dev
 
       - name: Install App::FontSample dependencies
         run: zef install --/test --test-depends --deps-only .
