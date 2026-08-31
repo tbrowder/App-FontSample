@@ -14,6 +14,14 @@ jobs:
       - uses: actions/checkout@v7
 
       # Install Rakudo here using normal method
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+        raku-version:
+          - 'latest'
+    runs-on: ${{ matrix.os }}
 
       - name: Install App::FontSample dependencies
         run: zef install --deps-only .
