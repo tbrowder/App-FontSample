@@ -1,0 +1,101 @@
+=begin pod
+
+=TITLE App::FontSample TODO
+
+=SUBTITLE Planned improvements after the first usable release
+
+=head1 PURPOSE
+
+This file contains planned work for C<App::FontSample>. Keeping future work
+here allows C<README.rakudoc> to concentrate on helping a new user install
+and use the current release.
+
+The items below are plans, not promises about a particular release.
+
+=head1 LAYOUTS
+
+=item Add a dedicated waterfall-only renderer instead of using the specimen
+renderer for C<waterfall>.
+
+=item Continue improving the comparison and collection layouts for larger
+font sets and more varied sample text.
+
+=item Consider additional layouts such as language samples, font metrics, and
+Unicode-oriented glyph charts where they add capabilities beyond the current
+layouts.
+
+=head1 CHARACTER AND GLYPH DISPLAY
+
+=item Add optional character-cell borders.
+
+=item Add optional baseline and cap-height guides.
+
+=item Add small left and right edge tick marks for visual font-metric
+inspection.
+
+=item Extend C<characters> input with convenient Unicode range notation such
+as C<0020..007E>.
+
+=item Investigate named Unicode block selection.
+
+=item Improve handling and presentation of characters not present in the
+selected font.
+
+=head1 LANGUAGE SAMPLES
+
+=item Expand the built-in language sample and pangram registry.
+
+=item Document which sample languages are covered by commonly used font
+families.
+
+=item Make it easy for applications to supply additional language samples
+without modifying C<App::FontSample>.
+
+=head1 JSON AND COMMAND-LINE USE
+
+=item Add polished, version-controlled JSON examples for specimen,
+comparison, collection, and character-grid output.
+
+=item Add more tests that exercise the installed C<font-sample> command.
+
+=item Add tests for multi-page comparison and character output.
+
+=item Review command-line diagnostics and error messages for missing fonts,
+bad paths, unsupported layouts, and malformed configuration files.
+
+=head1 FONT PROVIDERS
+
+=item Keep C<App::FontSample> provider-neutral. Font discovery, installation,
+and collection-specific behavior should remain outside the core sampler.
+
+=item Continue testing C<NotoFonts-OT> as an optional integration rather than
+making it a required dependency.
+
+=item Consider a separate helper or system tool for discovering and
+installing additional Noto fonts and font weights.
+
+=head1 API AND INTERNAL CLEANUP
+
+=item Review whether C<App::FontSample::Provider> is still useful. Remove it
+in a later API cleanup if the C<PDF::Content::FontObj> interface has made it
+obsolete.
+
+=item Review public option names as the layouts mature and keep common
+options consistent across layouts.
+
+=item Continue separating font acquisition, page description, and layout
+rendering so new layouts do not require changes to font-provider code.
+
+=head1 DOCUMENTATION
+
+=item Keep the README focused on the shortest path from installation to a
+successful PDF.
+
+=item Add visual examples of the principal layouts when stable examples are
+available.
+
+=item Keep optional native-library requirements with the documentation for
+the font loader or provider that requires them rather than presenting them as
+requirements of the provider-neutral core.
+
+=end pod

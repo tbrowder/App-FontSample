@@ -2,15 +2,115 @@
 
 =TITLE App::FontSample
 
-=SUBTITLE Produce PDF font specimens from any C<PDF::Content::FontObj>
+=SUBTITLE Create PDF samples of fonts
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
-Library use with one already-loaded font:
+C<App::FontSample> creates PDF font specimens, comparisons, collections, and
+character charts.
+
+The most important thing to know is that C<App::FontSample> does not provide
+a collection of fonts. The library samples a font supplied as a
+C<PDF::Content::FontObj>.
+
+For a first test, use a PDF core font. No external font file or optional font
+collection is required.
+
+After that, applications may use OTF or TTF files, C<NotoFonts-OT>, or any
+other source capable of supplying a suitable C<PDF::Content::FontObj>.
+
+=head1 GETTING STARTED
+
+=head2 1. Install App::FontSample
+
+=begin code :lang<text>
+zef install App::FontSample
+=end code
+
+=head2 2. Create your first sample
+
+The following example uses the PDF core Times-Roman font. It is a good first
+test because it does not require an external font file.
 
 =begin code :lang<raku>
+use PDF::API6;
 use App::FontSample;
 
+my $pdf = PDF::API6.new;
+my $font = $pdf.core-font: :family<Times-Roman>;
+
+create-font-sample(
+    $font,
+    :name<Times-Roman>,
+    :output<sample.pdf>,
+);
+=end code
+
+The resulting C<sample.pdf> contains a specimen of Times-Roman.
+
+=head2 3. Try another font
+
+C<App::FontSample> is provider-neutral. Once you have a
+C<PDF::Content::FontObj>, the sampling code is the same regardless of where
+the font came from.
+
+For example, C<NotoFonts-OT> is an optional source of ready-to-use Noto font
+objects:
+
+=begin code :lang<text>
+zef install NotoFonts-OT
+=end code
+
+Then:
+
+=begin code :lang<raku>
+use NotoFonts-OT;
+use App::FontSample;
+
+my $font = get-loaded-font('NotoSerif-Regular');
+
+create-font-sample(
+    $font,
+    :name<NotoSerif-Regular>,
+    :output<noto-serif.pdf>,
+);
+=end code
+
+C<NotoFonts-OT> is not a dependency of C<App::FontSample>. It is simply one
+convenient font source.
+
+Some external font loaders require native system libraries. Install any
+native prerequisites required by the font provider or loader you choose.
+
+=head1 BASIC CONCEPT
+
+The intended relationship is:
+
+=begin code :lang<text>
+font source
+    |
+    v
+PDF::Content::FontObj
+    |
+    v
+App::FontSample
+    |
+    v
+PDF sample
+=end code
+
+Font providers are responsible for locating and loading fonts.
+C<App::FontSample> is responsible for laying them out and creating the PDF.
+
+=head1 LIBRARY API
+
+=head2 create-font-sample
+
+Creates a PDF sample from one C<PDF::Content::FontObj>.
+
+A typical call is:
+
+=begin code :lang<raku>
 create-font-sample(
     $font,
     :name<MyFont-Regular>,
@@ -20,81 +120,92 @@ create-font-sample(
 );
 =end code
 
-Command-line use with an OTF or TTF file:
+Important named options include:
 
-=begin code :lang<text>
-font-sample \
-    --font=/path/to/font.otf \
-    --output=sample.pdf \
-    --layout=specimen \
-    --paper=Letter
+=item C<name> - name displayed for the font; required
+=item C<output> - output PDF pathname; required
+=item C<paper> - C<Letter> or C<A4>; defaults to C<Letter>
+=item C<landscape> - use landscape orientation
+=item C<margin> - page margin in PDF points; defaults to 36
+=item C<layout> - requested sample layout; defaults to C<specimen>
+=item C<title> - document title
+=item C<family> - optional font-family description
+=item C<style> - optional font-style description
+=item C<language> - optional language code for registered sample text
+=item C<debug> - enable diagnostic messages
+
+PDF dimensions are expressed in points; 72 points equal one inch.
+
+=head2 create-font-collection-sample
+
+Creates a PDF from a non-empty collection of
+C<App::FontSample::FontEntry> objects.
+
+For example:
+
+=begin code :lang<raku>
+use App::FontSample;
+use App::FontSample::FontEntry;
+
+my @entries;
+
+@entries.push: App::FontSample::FontEntry.new(
+    :name<Font-One>,
+    :font($font-one),
+);
+
+@entries.push: App::FontSample::FontEntry.new(
+    :name<Font-Two>,
+    :font($font-two),
+);
+
+create-font-collection-sample(
+    @entries,
+    :layout<comparison>,
+    :output<comparison.pdf>,
+);
 =end code
 
-A reproducible JSON definition can contain one sample or several jobs:
-
-=begin code :lang<text>
-font-sample --config=font-samples.json
-=end code
-
-=head1 DESCRIPTION
-
-C<App::FontSample> separates font acquisition from PDF specimen rendering.
-Library callers supply one or more already-loaded C<PDF::Content::FontObj>
-objects. The installed C<font-sample> program can load OTF or TTF files
-directly or read JSON job definitions.
-
-The library is provider-neutral. C<NotoFonts-OT> is useful with the examples,
-but it is not a dependency of C<App::FontSample>.
-
-Letter and A4 paper are supported in portrait and landscape orientation.
-Margins are expressed in PDF points; 72 points equal one inch.
+The default collection layout is C<comparison>.
 
 =head1 LAYOUTS
 
 =head2 specimen
 
-One page per font. Shows the font name, uppercase and lowercase alphabets,
-numerals and punctuation, a pangram, and a size waterfall.
+Produces one specimen page per font. The page shows the font name, uppercase
+and lowercase alphabets, numerals and punctuation, a pangram, and a size
+waterfall.
 
 =head2 waterfall
 
-Accepted as a specimen-compatible layout. The specimen page includes a size
-waterfall controlled by the C<sizes> option. A dedicated waterfall-only page
-is listed in the TODO section.
+Currently accepted as a specimen-compatible layout. The specimen renderer
+includes a size waterfall controlled by the C<sizes> option.
 
 =head2 comparison
 
-Shows the same sample text in each supplied font. Rows are automatically
-continued onto additional pages when necessary. C<comparison-size> controls
-the sample size and defaults to 18 points.
+Shows the same sample text in each supplied font. Rows continue onto
+additional pages when necessary. C<comparison-size> controls the sample size
+and defaults to 18 points.
 
 =head2 collection
 
-Places a compact font collection on one page. C<sample-size> defaults to 14
-points and C<leading-ratio> defaults to 0.20. The layout refuses to overflow
-the lower margin; use C<comparison> when the font set does not fit.
+Places a compact collection of fonts on one page. C<sample-size> defaults to
+14 points and C<leading-ratio> defaults to 0.20.
+
+The layout refuses to overflow the lower page margin. Use C<comparison> for a
+font collection that does not fit on one page.
 
 =head2 characters
 
-Shows selected characters in a grid with a C<U+XXXX> label beneath each glyph.
-The grid automatically continues onto additional pages. C<columns> defaults
-to 8. Library callers may also pass C<glyph-size>.
+Shows selected characters in a grid with a C<U+XXXX> label beneath each
+glyph. The grid continues onto additional pages when necessary.
 
-=head1 LIBRARY API
+C<columns> defaults to 8. Library callers may also supply C<glyph-size>.
 
-=head2 create-font-sample
+=head1 USING NOTOFONTS-OT FOR A COLLECTION
 
-Creates a PDF from one C<PDF::Content::FontObj>.
-
-=head2 create-font-collection-sample
-
-Creates a PDF from a non-empty collection of C<App::FontSample::FontEntry>
-objects. The default collection layout is C<comparison>.
-
-=head1 NOTOFONTS-OT EXAMPLE
-
-C<NotoFonts-OT> exports C<get-loaded-font>, so it can be used without a
-provider object:
+C<NotoFonts-OT> exports C<get-loaded-font>. A Noto collection can therefore
+be assembled without a provider object:
 
 =begin code :lang<raku>
 use NotoFonts-OT;
@@ -126,7 +237,19 @@ create-font-collection-sample(
 
 =head1 COMMAND-LINE PROGRAM
 
-Direct mode requires C<--font> and C<--output>. Important options include:
+The distribution installs C<font-sample>.
+
+For direct use with an OTF or TTF file:
+
+=begin code :lang<text>
+font-sample \
+    --font=/path/to/font.otf \
+    --output=sample.pdf \
+    --layout=specimen \
+    --paper=Letter
+=end code
+
+Important command-line options include:
 
 =item C<--layout=specimen|waterfall|comparison|characters|collection>
 =item C<--paper=Letter|A4>
@@ -145,7 +268,15 @@ Direct mode requires C<--font> and C<--output>. Important options include:
 
 =head1 JSON INPUT
 
-The original single-job object remains valid:
+A JSON definition makes a set of samples reproducible.
+
+Run a definition with:
+
+=begin code :lang<text>
+font-sample --config=font-samples.json
+=end code
+
+A single sample can be defined as:
 
 =begin code :lang<json>
 {
@@ -194,20 +325,21 @@ For several related outputs, use C<defaults> plus C<samples>:
 }
 =end code
 
-Sample values override values in C<defaults>. Relative font and output paths
-are interpreted relative to the JSON definition file, not the current working
-directory.
+Values in an individual sample override values in C<defaults>. Relative font
+and output paths are interpreted relative to the JSON definition file rather
+than the current working directory.
 
 =head1 LANGUAGE SAMPLES
 
 C<App::FontSample::SampleText> provides a small built-in pangram registry.
+
 List the available language codes with:
 
 =begin code :lang<text>
 font-sample --languages
 =end code
 
-A library caller may register additional sample text at runtime.
+Library callers may register additional sample text at runtime.
 
 =head1 TESTING
 
@@ -217,37 +349,23 @@ Run the normal test suite with:
 zef test .
 =end code
 
-Visual examples that depend on C<NotoFonts-OT> should remain outside the
-normal dependency path so the application continues to work with any suitable
-font source.
+The normal tests do not require C<NotoFonts-OT>.
 
-=head1 TODO
+Integration with C<NotoFonts-OT> can be tested separately by installing that
+optional distribution and running the appropriate extended tests. This keeps
+the core application independent of any particular font collection.
 
-The current release is intended to be useful as-is. Planned improvements are:
+=head1 PROJECT STATUS AND FUTURE WORK
 
-=item Add a dedicated waterfall-only renderer instead of using the specimen
-renderer for C<waterfall>.
+This release is intended to provide a useful working font sampler while
+keeping the public interface independent of individual font providers.
 
-=item Add optional character-cell borders, baseline/cap-height guides, and
-small edge tick marks for font-metric inspection.
+Planned work is maintained separately in C<docs/TODO.rakudoc>.
 
-=item Extend C<characters> input with convenient Unicode range notation such
-as C<0020..007E> and named blocks.
+=head1 SOURCE
 
-=item Add more tests that emulate the installed command-line examples,
-including multi-page comparison and character output.
-
-=item Expand the built-in language sample registry and document which fonts
-cover each sample.
-
-=item Add more polished JSON examples for specimen, comparison, collection,
-and character-grid jobs.
-
-=item Review whether the obsolete C<App::FontSample::Provider> role should be
-removed in a later API cleanup.
-
-=item Consider a separate helper for discovering or installing additional
-Noto fonts; keep that functionality outside the provider-neutral core.
+The project source is maintained in the C<tbrowder/App-FontSample> repository
+on GitHub.
 
 =head1 AUTHOR
 

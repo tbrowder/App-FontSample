@@ -1,0 +1,14 @@
+App::FontSample first-release documentation update
+
+Files:
+  docs/README.rakudoc
+  docs/TODO.rakudoc
+  t/9-release-docs.t
+
+The README begins with the shortest path to a successful PDF and uses
+Times-Roman as the first core-font example. NotoFonts-OT is documented as
+an optional font source. Planned work is kept in docs/TODO.rakudoc.
+
+The added test is intentionally lightweight: it checks that the two release
+documents exist and that the README retains several important first-release
+documentation promises.
