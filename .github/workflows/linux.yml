@@ -32,5 +32,5 @@ jobs:
                libharfbuzz-dev
       - name: Install Dependencies
         run: zef install --/test --test-depends --deps-only .
-      - name: Run Tests
-        run: zef test -I. t
+      - name: Install
+        run: zef install .
