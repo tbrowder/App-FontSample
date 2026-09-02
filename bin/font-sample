@@ -28,8 +28,8 @@ sub usage(Int:D $status = 0 --> Nil) {
       --name=TEXT          Display name; defaults to font filename
       --family=TEXT        Font family metadata
       --style=TEXT         Font style; default: Regular
-      --layout=NAME        specimen, waterfall, comparison,
-                           characters, collection
+      --layout=NAME        specimen, comparison, characters,
+                           collection
       --paper=Letter|A4    Paper size; default: Letter
       --landscape          Use landscape orientation
       --margin=POINTS      Margin in PDF points; default: 36
@@ -145,6 +145,9 @@ sub render-config(
     %render-options<pangram> = $config.pangram
         if $config.pangram.defined;
 
+    %render-options<language> = $config.language
+        if $config.language.defined;
+
     %render-options<sizes> = $config.sizes
         if $config.sizes.elems;
 
@@ -208,6 +211,11 @@ sub render-direct-options(%options --> Nil) {
 
     my Str $pangram = %options<pangram>;
 
+    if $pangram.defined
+        and (not %options<language>:exists) {
+        die '--pangram requires --language=CODE so the pangram can be labeled';
+    }
+
     if (not $pangram.defined)
         and %options<language>:exists {
         $pangram = App::FontSample::SampleText.new.pangram(
@@ -237,6 +245,9 @@ sub render-direct-options(%options --> Nil) {
 
     %render-options<pangram> = $pangram
         if $pangram.defined;
+
+    %render-options<language> = %options<language>
+        if %options<language>:exists;
 
     %render-options<sizes> = @sizes
         if @sizes.elems;
