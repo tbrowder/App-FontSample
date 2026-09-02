@@ -35,7 +35,7 @@ The easiest first test uses a standard PDF core font, so no external font file i
 use PDF::API6;
 use App::FontSample;
 
-my $pdf = PDF::API6.new;
+my $pdf  = PDF::API6.new;
 my $font = $pdf.core-font: :family<Times-Roman>;
 
 create-font-sample(
@@ -434,7 +434,11 @@ EXAMPLES
 
 The `examples` directory contains programs demonstrating current capabilities. `examples/current-capabilities.raku` uses PDF core fonts and creates examples of every current layout.
 
-The Noto examples demonstrate optional integration with `NotoFonts-OT`.
+Create the samples this way:
+
+    raku -Ilib examples/current-capabilities.raku
+
+The Noto examples demonstrate optional integration with `NotoFonts-OT` and their large glyph collections.
 
 TESTING
 =======
@@ -460,5 +464,12 @@ The project source is maintained in the `tbrowder/App-FontSample` repository on 
 AUTHOR
 ======
 
-Thomas Browder
+Tom Browder <tbrowder@acm.org>
+
+COPYRIGHT AND LICENSE
+=====================
+
+© 2026 Tom Browder
+
+This library is free software; you may redistribute it or modify it under the Artistic License 2.0.
 

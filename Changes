@@ -1,45 +1,4 @@
-0.2.0  2026-08-29
-    - Make NotoFonts-OT optional as intended; App::FontSample no longer
-      imports it and META6.json no longer requires it.
-    - Add working paginated comparison layout.
-    - Add working paginated characters layout with U+XXXX labels.
-    - Add comparison and characters layout dispatch in App::FontSample::PDF.
-    - Default create-font-collection-sample to the comparison layout.
-    - Fix command-line Paper construction to use :paper rather than :name.
-    - Keep direct CLI and JSON modes aligned with the supported layouts.
-    - Refresh NotoFonts-OT examples for its exported get-loaded-font API.
-    - Add a prioritized TODO section to the README documentation.
-
-0.1.2  2026-08-09
-    - Make JSON definitions a first-class multi-sample input format.
-    - Add App::FontSample::ConfigFile.
-    - Support defaults plus a samples array in one JSON file.
-    - Preserve compatibility with the original single-sample JSON form.
-    - Resolve relative font and output paths from the JSON file directory.
-    - Fix language-derived pangram assignment in App::FontSample::Config.
-    - Add examples/font-samples.json and t/7-config-file.t.
-
-0.1.1  2026-08-08
-    - Add single-page collection layout.
-    - Default collection sample size is 14 pt.
-    - Add configurable leading-ratio (default 0.20).
-    - Add examples/noto-10-fonts.raku using NotoFonts-OT get-loaded-font.
-    - Add file-based JSON collection example.
-    - Add t/6-collection.t.
-
 Revision history for App::FontSample
 
-0.1.0  2026-08-07
-    - Add stable provider-neutral library API for one or many FontObj objects.
-    - Add specimen, waterfall, comparison, and characters layout interfaces.
-    - Extend JSON jobs with layout and layout-specific options.
-    - Add ISO language sample selection and runtime registration.
-    - Add complete NotoFonts-OT ten-font comparison example.
-    - Use N-name.t test naming.
-    - Preserve IO::Path output values without using .absolute.
-
-0.0.2  2026-08-01
-    - Add JSON job input.
-
-0.0.1  2026-07-31
-    - Initial development version.
+{{NEXT}}
+    - Initial version
