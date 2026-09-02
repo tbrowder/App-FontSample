@@ -30,13 +30,20 @@ sub create-font-sample(
 
     my Str $paper-name = $media // $paper;
 
-    if (not %options<pangram>:exists)
-        and $language.defined {
-        %options<pangram> =
-            App::FontSample::SampleText.new.pangram(
-                $language,
-                :$debug,
-            );
+    if %options<pangram>:exists
+        and (not $language.defined) {
+        die 'An explicit pangram requires :language<xx> so it can be labeled';
+    }
+
+    if $language.defined {
+        %options<language> = $language;
+
+        if (not %options<pangram>:exists) {
+            %options<pangram> =
+                App::FontSample::SampleText.new.pangram(
+                    $language,
+                );
+        }
     }
 
     my $paper-object = App::FontSample::Paper.new(
@@ -85,13 +92,20 @@ sub create-font-collection-sample(
     my Str $paper-name = $media // $paper;
     my %render-options = %options.Hash;
 
-    if (not %render-options<pangram>:exists)
-        and $language.defined {
-        %render-options<pangram> =
-            App::FontSample::SampleText.new.pangram(
-                $language,
-                :$debug,
-            );
+    if %render-options<pangram>:exists
+        and (not $language.defined) {
+        die 'An explicit pangram requires :language<xx> so it can be labeled';
+    }
+
+    if $language.defined {
+        %render-options<language> = $language;
+
+        if (not %render-options<pangram>:exists) {
+            %render-options<pangram> =
+                App::FontSample::SampleText.new.pangram(
+                    $language,
+                );
+        }
     }
 
     my $paper-object = App::FontSample::Paper.new(

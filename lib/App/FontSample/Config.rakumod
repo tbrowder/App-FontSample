@@ -79,7 +79,6 @@ method from-data(
 
     die "Unsupported layout '$layout'"
         unless $layout eq 'specimen'
-            or $layout eq 'waterfall'
             or $layout eq 'comparison'
             or $layout eq 'characters'
             or $layout eq 'collection';

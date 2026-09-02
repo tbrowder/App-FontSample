@@ -5,7 +5,7 @@ unit class App::FontSample::Layout::Comparison
     does App::FontSample::Layout;
 
 my constant $DEFAULT-TEXT =
-    'Hamburgefonts 0123456789 Aa Bb Cc';
+    'The quick brown fox jumps over the lazy dog. 0123456789';
 
 my constant $DEFAULT-SIZE = 18;
 my constant $TITLE-HEIGHT = 28;
@@ -66,8 +66,8 @@ method render-collection(
             $gfx.text: {
                 .font = $label-font, 9;
                 .text-position = [$left, $y];
-                .say: %options<title>
-                    // 'FONT COMPARISON';
+                .say: (%options<title> // 'FONT COMPARISON')
+                    ~ " — {$sample-size} pt";
 
                 $y -= $TITLE-HEIGHT;
 

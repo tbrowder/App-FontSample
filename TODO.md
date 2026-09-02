@@ -11,14 +11,14 @@ Planned improvements after the current release
 PURPOSE
 =======
 
-This file contains planned work for `App::FontSample`. These items are not current capabilities and therefore are intentionally kept out of the user documentation in `README.rakudoc`.
+This file contains planned work for `App::FontSample`. The README documents current capability only.
 
 LAYOUTS
 =======
 
-  * Add a dedicated waterfall-only renderer instead of using the specimen renderer for `waterfall`.
+  * Consider adding a dedicated `waterfall` layout if a waterfall-only sample proves useful. The current `specimen` layout already contains a clearly labeled size waterfall.
 
-  * Continue improving the comparison and collection layouts for larger font sets and more varied sample text.
+  * Continue improving comparison and collection layouts for larger font sets and more varied sample text.
 
   * Consider additional layouts for language samples and font metrics.
 
@@ -29,9 +29,9 @@ CHARACTER AND GLYPH DISPLAY
 
   * Add optional baseline and cap-height guides.
 
-  * Add small left and right edge tick marks for visual font-metric inspection.
+  * Add left and right edge tick marks for visual font-metric inspection.
 
-  * Extend `characters` input with convenient Unicode range notation such as `0020..007E`.
+  * Add convenient Unicode range notation such as `0020..007E`.
 
   * Investigate named Unicode block selection.
 
@@ -40,16 +40,16 @@ CHARACTER AND GLYPH DISPLAY
 LANGUAGE SAMPLES
 ================
 
-  * Expand the built-in language sample and pangram registry.
+  * Expand the built-in language pangram registry beyond English.
+
+  * Keep each registered pangram associated with both a language name and its two-letter language code so specimen labels remain self-identifying.
 
   * Document which sample languages are covered by commonly used font families.
-
-  * Continue making it easy for applications to supply additional language samples without modifying `App::FontSample`.
 
 JSON AND COMMAND-LINE USE
 =========================
 
-  * Add separate version-controlled JSON example files for each principal layout.
+  * Add separate version-controlled JSON examples for each principal layout.
 
   * Add more tests that exercise the installed `font-sample` command.
 
@@ -60,7 +60,7 @@ JSON AND COMMAND-LINE USE
 FONT PROVIDERS
 ==============
 
-  * Keep `App::FontSample` provider-neutral. Font discovery, installation, and collection-specific behavior should remain outside the core sampler.
+  * Keep `App::FontSample` provider-neutral.
 
   * Continue testing `NotoFonts-OT` as an optional integration rather than making it a required dependency.
 
@@ -69,16 +69,14 @@ FONT PROVIDERS
 API AND INTERNAL CLEANUP
 ========================
 
-  * Review whether `App::FontSample::Provider` is still useful. Remove it in a later API cleanup if the `PDF::Content::FontObj` interface has made it obsolete.
+  * Review whether `App::FontSample::Provider` is still useful.
 
   * Review public option names as the layouts mature and keep common options consistent across layouts.
 
-  * Continue separating font acquisition, page description, and layout rendering so new layouts do not require changes to font-provider code.
+  * Continue separating font acquisition, page description, and layout rendering.
 
 DOCUMENTATION
 =============
 
-  * Add visual PDF examples to the published documentation when there is a practical way to distribute and maintain them.
-
-  * Keep optional native-library requirements with the documentation for the font loader or provider that requires them rather than presenting them as requirements of the provider-neutral core.
+  * Add visual PDF examples to the published documentation when practical.
 

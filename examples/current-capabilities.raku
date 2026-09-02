@@ -22,21 +22,9 @@ create-font-sample(
     $times,
     :name<Times-Roman>,
     :layout<specimen>,
+    :title<Font Specimen>,
+    :language<en>,
     :output<example-specimen.pdf>,
-);
-
-create-font-sample(
-    $times,
-    :name<Times-Roman>,
-    :layout<waterfall>,
-    :text(
-        'Sphinx of black quartz, judge my vow. 0123456789'
-    ),
-    :sizes(
-        8, 9, 10, 11, 12, 14,
-        18, 24, 30, 36, 48, 60
-    ),
-    :output<example-waterfall.pdf>,
 );
 
 my @entries;
@@ -59,15 +47,23 @@ my @entries;
 create-font-collection-sample(
     @entries,
     :layout<comparison>,
+    :title<Font Comparison>,
     :comparison-size(18),
+    :text(
+        'The quick brown fox jumps over the lazy dog. 0123456789'
+    ),
     :output<example-comparison.pdf>,
 );
 
 create-font-collection-sample(
     @entries,
     :layout<collection>,
+    :title<Font Collection>,
     :sample-size(14),
     :leading-ratio(0.20),
+    :text(
+        'Hamburgefonts 0123456789 Aa Bb Cc'
+    ),
     :output<example-collection.pdf>,
 );
 
@@ -75,6 +71,7 @@ create-font-sample(
     $times,
     :name<Times-Roman>,
     :layout<characters>,
+    :title<Character Sample>,
     :characters(
         'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     ),
@@ -85,7 +82,6 @@ create-font-sample(
 
 say 'Created:';
 say '  example-specimen.pdf';
-say '  example-waterfall.pdf';
 say '  example-comparison.pdf';
 say '  example-collection.pdf';
 say '  example-characters.pdf';

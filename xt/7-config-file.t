@@ -28,7 +28,7 @@ $file.spurt: q:to/JSON/;
     "samples": [
         {
             "output": "out/one.pdf",
-            "layout": "waterfall",
+            "layout": "specimen",
             "sizes": [10, 20]
         },
         {

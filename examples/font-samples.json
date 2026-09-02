@@ -7,8 +7,8 @@
     },
     "samples": [
         {
-            "output": "output/noto-serif-waterfall.pdf",
-            "layout": "waterfall",
+            "output": "output/noto-serif-specimen.pdf",
+            "layout": "specimen",
             "title": "Noto Serif Regular",
             "sizes": [
                 8,

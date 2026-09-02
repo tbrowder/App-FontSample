@@ -82,7 +82,7 @@ method render-collection(
                 $gfx.text: {
                     .font = $label-font, 9;
                     .text-position = [$left, $top];
-                    .say: "$title - $display-name";
+                    .say: "$title — $display-name — {$glyph-size} pt";
 
                     my Numeric $grid-top =
                         $top - $TITLE-HEIGHT;

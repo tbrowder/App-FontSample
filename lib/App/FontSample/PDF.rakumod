@@ -26,8 +26,7 @@ method render(
     my @entries;
     @entries.push: $entry;
 
-    return self.render-collection(
-        @entries,
+    return self.render-collection( @entries,
         :$output,
         |%options,
     );
@@ -106,9 +105,6 @@ method render-collection(
 method layout-object() {
     given $!layout.lc {
         when 'specimen' {
-            return App::FontSample::Layout::Specimen.new;
-        }
-        when 'waterfall' {
             return App::FontSample::Layout::Specimen.new;
         }
         when 'collection' {

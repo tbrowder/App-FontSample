@@ -1,16 +1,19 @@
-App::FontSample documentation update
+App::FontSample publication cleanup
 
-This directory is intentionally NOT zipped.
+This update implements the four publication observations:
 
-Files:
-  docs/README.rakudoc
-  docs/TODO.rakudoc
-  examples/current-capabilities.raku
-  t/9-release-docs.t
+1. Each sample page identifies its purpose, font(s), and relevant point size.
+2. Comparison no longer defaults to the same Hamburgefonts string used by
+   the compact collection layout.
+3. The duplicate public "waterfall" layout name is removed. Specimen retains
+   its size-waterfall section.
+4. Pangrams are labeled with language name and two-letter code. The current
+   built-in pangram is "English (en)".
 
-The README describes current capability only and gives examples of every
-current layout. Planned work is kept in docs/TODO.rakudoc.
+New/updated files include renderer code, API/CLI/config handling, docs,
+current-capabilities example, and tests.
 
-The example program uses PDF core fonts and does not require NotoFonts-OT.
+DELETE-FILES.txt lists three obsolete waterfall example/test files that
+should be removed from the existing source tree.
 
-The Raku files have not been executed in this environment.
+The Raku tests were not run in this environment.

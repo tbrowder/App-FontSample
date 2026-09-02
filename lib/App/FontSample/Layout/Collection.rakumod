@@ -53,8 +53,8 @@ method render-collection(
         $gfx.text: {
             .font = $label-font, 9;
             .text-position = [$left, $y];
-            .say: %options<title>
-                // 'FONT COLLECTION';
+            .say: (%options<title> // 'FONT COLLECTION')
+                ~ " — {$sample-size} pt";
 
             $y -= $title-height;
 

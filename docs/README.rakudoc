@@ -6,7 +6,7 @@
 
 =head1 DESCRIPTION
 
-C<App::FontSample> creates PDF font specimens, comparisons, compact font
+C<App::FontSample> creates PDF font specimens, font comparisons, compact font
 collections, and character charts.
 
 C<App::FontSample> does not provide a font collection. Library callers supply
@@ -14,8 +14,13 @@ one or more C<PDF::Content::FontObj> objects. The installed C<font-sample>
 program can load an OTF or TTF file directly.
 
 The current release supports Letter and A4 paper, portrait and landscape
-orientation, configurable margins, several sample layouts, JSON job files,
-and registered language pangrams.
+orientation, configurable margins, JSON job files, registered language
+pangrams, and four layouts:
+
+=item C<specimen>
+=item C<comparison>
+=item C<collection>
+=item C<characters>
 
 =head1 INSTALLATION
 
@@ -25,63 +30,128 @@ zef install App::FontSample
 
 =head1 FIRST SAMPLE
 
-The easiest first test uses a standard PDF core font, so no external font
-file is required.
+The easiest first test uses the standard PDF core font Times-Roman, so no
+external font file is required.
 
 =begin code :lang<raku>
 use PDF::API6;
 use App::FontSample;
 
-my $pdf  = PDF::API6.new;
+my $pdf = PDF::API6.new;
 my $font = $pdf.core-font: :family<Times-Roman>;
 
 create-font-sample(
     $font,
     :name<Times-Roman>,
+    :title<Font Specimen>,
+    :language<en>,
     :output<sample.pdf>,
 );
 =end code
 
-This creates C<sample.pdf> using the default C<specimen> layout.
+The specimen identifies the font, labels the alphabet and punctuation sizes,
+labels the pangram as C<English (en)>, and includes a size waterfall with
+each point size shown at the left.
 
-=head1 LIBRARY INTERFACE
+=head1 CURRENT LAYOUTS
 
-=head2 create-font-sample
+=head2 specimen
 
-C<create-font-sample> creates a sample from one
-C<PDF::Content::FontObj>.
+The C<specimen> layout produces one specimen page per font. It shows the font
+name, alphabet, numerals and punctuation, a labeled language pangram, and a
+size waterfall.
 
 =begin code :lang<raku>
 create-font-sample(
     $font,
-    :name<MyFont-Regular>,
-    :paper<Letter>,
+    :name<Times-Roman>,
     :layout<specimen>,
-    :output<my-font.pdf>,
+    :title<Font Specimen>,
+    :language<en>,
+    :output<specimen.pdf>,
 );
 =end code
 
-Current common named options are:
+An explicit pangram must also identify its language so the PDF can label it:
 
-=item C<name> - displayed font name; required
-=item C<output> - output PDF pathname; required
-=item C<paper> - C<Letter> or C<A4>; default C<Letter>
-=item C<media> - alternate name for C<paper>
-=item C<landscape> - use landscape orientation
-=item C<margin> - page margin in PDF points; default 36
-=item C<layout> - layout name; default C<specimen>
-=item C<title> - document title
-=item C<family> - optional family description
-=item C<style> - optional style description
-=item C<language> - registered language code used to select a pangram
-=item C<debug> - enable diagnostic messages
+=begin code :lang<raku>
+create-font-sample(
+    $font,
+    :name<Times-Roman>,
+    :layout<specimen>,
+    :language<en>,
+    :pangram('Pack my box with five dozen liquor jugs.'),
+    :output<specimen-custom.pdf>,
+);
+=end code
 
-PDF dimensions are expressed in points; 72 points equal one inch.
+=head2 comparison
 
-=head2 create-font-collection-sample
+The C<comparison> layout displays the same text in several fonts at one
+stated point size. The font name is shown above each sample. The layout
+continues onto additional pages when needed.
 
-C<create-font-collection-sample> accepts a non-empty collection of
-C<App::FontSample::FontEntry> objects. Its default layout is C<comparison>.
+=begin code :lang<raku>
+create-font-collection-sample(
+    @entries,
+    :layout<comparison>,
+    :title<Font Comparison>,
+    :comparison-size(18),
+    :text(
+        'The quick brown fox jumps over the lazy dog. 0123456789'
+    ),
+    :output<comparison.pdf>,
+);
+=end code
+
+=head2 collection
+
+The C<collection> layout is a compact one-page inventory of fonts. Each font
+name is followed by a short typographic identification string. The page title
+states the sample point size.
+
+=begin code :lang<raku>
+create-font-collection-sample(
+    @entries,
+    :layout<collection>,
+    :title<Font Collection>,
+    :sample-size(14),
+    :text('Hamburgefonts 0123456789 Aa Bb Cc'),
+    :output<collection.pdf>,
+);
+=end code
+
+If the requested collection cannot fit within the page margins, the layout
+reports an error rather than overflowing the page.
+
+=head2 characters
+
+The C<characters> layout displays selected characters in a grid. The page
+heading identifies the font and glyph point size, and each cell labels the
+glyph with its Unicode code point.
+
+=begin code :lang<raku>
+create-font-sample(
+    $font,
+    :name<Times-Roman>,
+    :layout<characters>,
+    :title<Character Sample>,
+    :characters(
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    ),
+    :columns(8),
+    :glyph-size(30),
+    :output<characters.pdf>,
+);
+=end code
+
+Library callers may supply C<characters> as a string or as a positional
+collection containing one-character strings, integer Unicode code points, or
+strings such as C<U+0041>.
+
+=head1 FONT COLLECTIONS
+
+A comparison or collection uses C<App::FontSample::FontEntry> objects.
 
 =begin code :lang<raku>
 use App::FontSample;
@@ -90,148 +160,27 @@ use App::FontSample::FontEntry;
 my @entries;
 
 @entries.push: App::FontSample::FontEntry.new(
-    :name<Font-One>,
-    :font($font-one),
+    :name<Times-Roman>,
+    :font($times),
 );
 
 @entries.push: App::FontSample::FontEntry.new(
-    :name<Font-Two>,
-    :font($font-two),
+    :name<Helvetica>,
+    :font($helvetica),
 );
 
-create-font-collection-sample(
-    @entries,
-    :layout<comparison>,
-    :output<comparison.pdf>,
-);
-=end code
-
-=head1 CURRENT LAYOUTS
-
-=head2 specimen
-
-The C<specimen> layout produces one specimen page per font. It shows the
-font name, uppercase and lowercase alphabets, numerals and punctuation, a
-pangram, and a size waterfall.
-
-=begin code :lang<raku>
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :layout<specimen>,
-    :output<specimen.pdf>,
-);
-=end code
-
-The pangram and waterfall text may be replaced:
-
-=begin code :lang<raku>
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :layout<specimen>,
-    :pangram('Pack my box with five dozen liquor jugs.'),
-    :text('Sphinx of black quartz, judge my vow.'),
-    :sizes(8, 10, 12, 14, 18, 24, 36),
-    :output<specimen-custom.pdf>,
-);
-=end code
-
-=head2 waterfall
-
-C<waterfall> is currently an alternate layout name for the specimen
-renderer. Consequently it produces the specimen information as well as the
-size waterfall. C<sizes> controls the waterfall sizes.
-
-=begin code :lang<raku>
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :layout<waterfall>,
-    :text('Sphinx of black quartz, judge my vow. 0123456789'),
-    :sizes(8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60),
-    :output<waterfall.pdf>,
-);
-=end code
-
-=head2 comparison
-
-C<comparison> displays the same sample text in each supplied font.
-C<comparison-size> defaults to 18 points. The layout automatically continues
-onto additional pages when the rows do not fit on one page.
-
-=begin code :lang<raku>
 create-font-collection-sample(
     @entries,
     :layout<comparison>,
     :comparison-size(18),
-    :text('Hamburgefonts 0123456789 Aa Bb Cc'),
     :output<comparison.pdf>,
-);
-=end code
-
-=head2 collection
-
-C<collection> places a compact collection of fonts on one page.
-C<sample-size> defaults to 14 points and C<leading-ratio> defaults to 0.20.
-
-=begin code :lang<raku>
-create-font-collection-sample(
-    @entries,
-    :layout<collection>,
-    :sample-size(14),
-    :leading-ratio(0.20),
-    :text('Hamburgefonts 0123456789 Aa Bb Cc'),
-    :output<collection.pdf>,
-);
-=end code
-
-The collection layout reports an error rather than allowing the rows to
-overflow the lower page margin. Use C<comparison> when the collection is too
-large for one page.
-
-=head2 characters
-
-C<characters> displays selected characters in a grid with a C<U+XXXX> label
-beneath each glyph. C<columns> defaults to 8 and the library C<glyph-size>
-option defaults to 30 points. The layout automatically creates additional
-pages when necessary.
-
-=begin code :lang<raku>
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :layout<characters>,
-    :characters('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'),
-    :columns(8),
-    :glyph-size(30),
-    :output<characters.pdf>,
-);
-=end code
-
-Library callers may supply C<characters> as a string or as a positional
-collection containing individual characters, integer Unicode code points,
-or strings of the form C<U+XXXX>.
-
-=begin code :lang<raku>
-my @characters =
-    'A',
-    'B',
-    0x43,
-    'U+0044';
-
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :layout<characters>,
-    :characters(@characters),
-    :output<selected-characters.pdf>,
 );
 =end code
 
 =head1 PAPER AND PAGE OPTIONS
 
-Both C<Letter> and C<A4> are supported.
+Both C<Letter> and C<A4> are supported. Pages may be portrait or landscape,
+and the margin may be set in PDF points.
 
 =begin code :lang<raku>
 create-font-sample(
@@ -240,14 +189,17 @@ create-font-sample(
     :paper<A4>,
     :landscape,
     :margin(36),
+    :language<en>,
     :output<a4-landscape.pdf>,
 );
 =end code
 
+There are 72 PDF points in one inch.
+
 =head1 LANGUAGE PANGRAMS
 
-C<App::FontSample::SampleText> contains a small registry of language
-pangrams. A registered language code can supply the specimen pangram:
+The current built-in pangram registry includes English under the two-letter
+code C<en>.
 
 =begin code :lang<raku>
 create-font-sample(
@@ -258,56 +210,35 @@ create-font-sample(
 );
 =end code
 
-The installed program lists the currently registered language codes:
+The resulting specimen labels the text C<English (en) pangram>.
+
+List the currently registered language codes with:
 
 =begin code :lang<text>
 font-sample --languages
 =end code
 
-A library caller may also register additional sample text at runtime.
+Applications may register additional pangrams and language names at runtime.
 
-=head1 USING AN OTF OR TTF FILE
+=head1 OTF AND TTF FILES
 
-The installed C<font-sample> program loads an OTF or TTF file directly.
+The installed C<font-sample> program loads an OTF or TTF file directly:
 
 =begin code :lang<text>
 font-sample \
     --font=/path/to/font.otf \
     --output=sample.pdf \
     --layout=specimen \
-    --paper=Letter
+    --language=en
 =end code
 
-Current direct-mode options are:
-
-=item C<--name=TEXT>
-=item C<--family=TEXT>
-=item C<--style=TEXT>
-=item C<--layout=specimen|waterfall|comparison|characters|collection>
-=item C<--paper=Letter|A4>
-=item C<--landscape>
-=item C<--margin=POINTS>
-=item C<--language=CODE>
-=item C<--text=TEXT>
-=item C<--pangram=TEXT>
-=item C<--sizes=N,N,...>
-=item C<--characters=TEXT>
-=item C<--columns=N>
-=item C<--comparison-size=N>
-=item C<--sample-size=N>
-=item C<--leading-ratio=N>
-=item C<--languages>
-=item C<--help>
-
-For example:
+Current direct-mode layout names are:
 
 =begin code :lang<text>
-font-sample \
-    --font=/path/to/font.otf \
-    --output=characters.pdf \
-    --layout=characters \
-    --characters=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 \
-    --columns=8
+specimen
+comparison
+collection
+characters
 =end code
 
 =head1 JSON INPUT
@@ -318,12 +249,13 @@ C<font-sample> can read one or more jobs from a JSON definition file:
 font-sample --config=font-samples.json
 =end code
 
-A single job can be defined as:
+For example:
 
 =begin code :lang<json>
 {
     "output": "output/sample.pdf",
     "layout": "specimen",
+    "language": "en",
     "fonts": [
         {
             "file": "fonts/MyFont.otf",
@@ -332,43 +264,6 @@ A single job can be defined as:
     ]
 }
 =end code
-
-Several related jobs may share defaults:
-
-=begin code :lang<json>
-{
-    "defaults": {
-        "paper": "Letter",
-        "margin": 36,
-        "fonts": [
-            {
-                "file": "fonts/MyFont-Regular.otf",
-                "name": "MyFont Regular"
-            },
-            {
-                "file": "fonts/MyFont-Bold.otf",
-                "name": "MyFont Bold"
-            }
-        ]
-    },
-    "samples": [
-        {
-            "output": "output/comparison.pdf",
-            "layout": "comparison",
-            "comparison-size": 18
-        },
-        {
-            "output": "output/characters.pdf",
-            "layout": "characters",
-            "characters": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-            "columns": 8
-        }
-    ]
-}
-=end code
-
-Values in an individual sample override values in C<defaults>. Relative font
-and output paths are interpreted relative to the JSON definition file.
 
 =head1 OPTIONAL NOTOFONTS-OT USE
 
@@ -399,24 +294,20 @@ for <
 create-font-collection-sample(
     @entries,
     :layout<comparison>,
+    :comparison-size(18),
     :output<noto-comparison.pdf>,
 );
 =end code
 
 =head1 EXAMPLES
 
-The C<examples> directory contains programs demonstrating current
-capabilities. C<examples/current-capabilities.raku> uses PDF core fonts and
-creates examples of every current layout.
+C<examples/current-capabilities.raku> uses PDF core fonts and creates four
+PDFs, one for each current layout:
 
-Create the samples this way:
-
-=begin code
-raku -Ilib examples/current-capabilities.raku
-=end code
-
-The Noto examples demonstrate optional integration with C<NotoFonts-OT>
-and their large glyph collections.
+=item C<example-specimen.pdf>
+=item C<example-comparison.pdf>
+=item C<example-collection.pdf>
+=item C<example-characters.pdf>
 
 =head1 TESTING
 
@@ -426,9 +317,7 @@ Run the normal test suite with:
 zef test .
 =end code
 
-The normal test suite does not require C<NotoFonts-OT>. Noto integration is
-tested separately so the core application remains independent of a
-particular font collection.
+The normal test suite does not require C<NotoFonts-OT>.
 
 =head1 FUTURE WORK
 

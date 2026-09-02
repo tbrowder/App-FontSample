@@ -1,5 +1,6 @@
 use v6.d;
 use App::FontSample::Layout;
+use App::FontSample::SampleText;
 
 unit class App::FontSample::Layout::Specimen
     does App::FontSample::Layout;
@@ -32,8 +33,24 @@ method render-page(
     my Numeric $y =
         $paper.height - $paper.margin;
 
+    my Bool $explicit-pangram =
+        %options<pangram>:exists;
+
+    my Str $language =
+        %options<language> // 'en';
+
+    if $explicit-pangram
+        and (not %options<language>:exists) {
+        die 'A specimen pangram requires a language code for its label';
+    }
+
     my Str $pangram =
         %options<pangram> // $DEFAULT-PANGRAM;
+
+    my Str $pangram-label =
+        App::FontSample::SampleText.new.pangram-label(
+            $language
+        );
 
     my Str $sample-text =
         %options<text> // $pangram;
@@ -49,8 +66,8 @@ method render-page(
         $gfx.text: {
             .font = $label-font, 9;
             .text-position = [$left, $y];
-            .say: %options<title>
-                // 'APP::FONTSAMPLE';
+            .say: (%options<title> // 'FONT SPECIMEN')
+                ~ " — $display-name";
 
             $y -= 28;
 
@@ -64,10 +81,16 @@ method render-page(
             if $display-name ne $entry.name {
                 .font = $label-font, 8;
                 .text-position = [$left, $y];
-                .say: $entry.name;
+                .say: "Font file/name: {$entry.name}";
 
                 $y -= 20;
             }
+
+            .font = $label-font, 8;
+            .text-position = [$left, $y];
+            .say: 'ALPHABET — 15 pt';
+
+            $y -= 15;
 
             .font = $entry.font, 15;
             .text-position = [$left, $y];
@@ -76,16 +99,22 @@ method render-page(
 
             $y -= 24;
 
+            .font = $label-font, 8;
+            .text-position = [$left, $y];
+            .say: 'NUMERALS AND PUNCTUATION — 14 pt';
+
+            $y -= 15;
+
             .font = $entry.font, 14;
             .text-position = [$left, $y];
             .say: $DEFAULT-NUMBERS,
                 :width($paper.usable-width);
 
-            $y -= 34;
+            $y -= 30;
 
             .font = $label-font, 8;
             .text-position = [$left, $y];
-            .say: 'PANGRAM';
+            .say: $pangram-label.uc ~ ' — 18 pt';
 
             $y -= 20;
 
@@ -98,7 +127,7 @@ method render-page(
 
             .font = $label-font, 8;
             .text-position = [$left, $y];
-            .say: 'SIZE WATERFALL';
+            .say: 'SIZE WATERFALL — point size shown at left';
 
             $y -= 18;
 

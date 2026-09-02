@@ -7,46 +7,38 @@ my IO::Path $readme =
 my IO::Path $todo =
     'docs/TODO.rakudoc'.IO;
 
-my IO::Path $example =
-    'examples/current-capabilities.raku'.IO;
-
 ok $readme.f,
-    'current README exists';
+    'docs/README.rakudoc exists';
 
 ok $todo.f,
-    'TODO exists';
-
-ok $example.f,
-    'current-capabilities example exists';
+    'docs/TODO.rakudoc exists';
 
 my Str $text = $readme.slurp;
 
-for <
-    specimen
-    waterfall
-    comparison
-    collection
-    characters
-> -> $layout {
+ok $text.contains('Times-Roman'),
+    'README first-use documentation mentions Times-Roman';
+
+ok $text.contains('zef install App::FontSample'),
+    'README contains installation command';
+
+ok $text.contains('PDF::Content::FontObj'),
+    'README explains the font-object interface';
+
+for <specimen comparison collection characters> -> $layout {
     ok $text.contains("=head2 $layout"),
         "README documents current '$layout' layout";
 }
 
-ok $text.contains('Times-Roman'),
-    'README first example uses Times-Roman';
+ok (not $text.contains('=head2 waterfall')),
+    'README does not document waterfall as a current layout';
 
-ok $text.contains('font-sample --languages'),
-    'README documents language listing';
+ok $text.contains('English (en)'),
+    'README documents language-name and language-code pangram labeling';
 
-ok $text.contains('font-sample --config=font-samples.json'),
-    'README documents JSON configuration';
+ok $text.contains('NotoFonts-OT'),
+    'README documents optional NotoFonts-OT use';
 
 ok $text.contains('docs/TODO.rakudoc'),
-    'README sends future work to TODO';
-
-my Str $future = $todo.slurp;
-
-ok $future.contains('dedicated waterfall-only renderer'),
-    'future waterfall renderer remains in TODO';
+    'README points to the separate TODO document';
 
 done-testing;

@@ -6,17 +6,17 @@
 
 =head1 PURPOSE
 
-This file contains planned work for C<App::FontSample>. These items are not
-current capabilities and therefore are intentionally kept out of the user
-documentation in C<README.rakudoc>.
+This file contains planned work for C<App::FontSample>. The README documents
+current capability only.
 
 =head1 LAYOUTS
 
-=item Add a dedicated waterfall-only renderer instead of using the specimen
-renderer for C<waterfall>.
+=item Consider adding a dedicated C<waterfall> layout if a waterfall-only
+sample proves useful. The current C<specimen> layout already contains a
+clearly labeled size waterfall.
 
-=item Continue improving the comparison and collection layouts for larger
-font sets and more varied sample text.
+=item Continue improving comparison and collection layouts for larger font
+sets and more varied sample text.
 
 =item Consider additional layouts for language samples and font metrics.
 
@@ -26,11 +26,9 @@ font sets and more varied sample text.
 
 =item Add optional baseline and cap-height guides.
 
-=item Add small left and right edge tick marks for visual font-metric
-inspection.
+=item Add left and right edge tick marks for visual font-metric inspection.
 
-=item Extend C<characters> input with convenient Unicode range notation such
-as C<0020..007E>.
+=item Add convenient Unicode range notation such as C<0020..007E>.
 
 =item Investigate named Unicode block selection.
 
@@ -39,17 +37,17 @@ selected font.
 
 =head1 LANGUAGE SAMPLES
 
-=item Expand the built-in language sample and pangram registry.
+=item Expand the built-in language pangram registry beyond English.
+
+=item Keep each registered pangram associated with both a language name and
+its two-letter language code so specimen labels remain self-identifying.
 
 =item Document which sample languages are covered by commonly used font
 families.
 
-=item Continue making it easy for applications to supply additional language
-samples without modifying C<App::FontSample>.
-
 =head1 JSON AND COMMAND-LINE USE
 
-=item Add separate version-controlled JSON example files for each principal
+=item Add separate version-controlled JSON examples for each principal
 layout.
 
 =item Add more tests that exercise the installed C<font-sample> command.
@@ -62,8 +60,7 @@ bad paths, unsupported layouts, and malformed configuration files.
 
 =head1 FONT PROVIDERS
 
-=item Keep C<App::FontSample> provider-neutral. Font discovery, installation,
-and collection-specific behavior should remain outside the core sampler.
+=item Keep C<App::FontSample> provider-neutral.
 
 =item Continue testing C<NotoFonts-OT> as an optional integration rather than
 making it a required dependency.
@@ -73,23 +70,16 @@ installing additional Noto fonts and font weights.
 
 =head1 API AND INTERNAL CLEANUP
 
-=item Review whether C<App::FontSample::Provider> is still useful. Remove it
-in a later API cleanup if the C<PDF::Content::FontObj> interface has made it
-obsolete.
+=item Review whether C<App::FontSample::Provider> is still useful.
 
 =item Review public option names as the layouts mature and keep common
 options consistent across layouts.
 
 =item Continue separating font acquisition, page description, and layout
-rendering so new layouts do not require changes to font-provider code.
+rendering.
 
 =head1 DOCUMENTATION
 
-=item Add visual PDF examples to the published documentation when there is a
-practical way to distribute and maintain them.
-
-=item Keep optional native-library requirements with the documentation for
-the font loader or provider that requires them rather than presenting them as
-requirements of the provider-neutral core.
+=item Add visual PDF examples to the published documentation when practical.
 
 =end pod
