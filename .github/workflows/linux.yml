@@ -27,7 +27,5 @@ jobs:
         run: sudo apt-get install libfontconfig1-dev
       - name: Install Dependencies
         run: zef install --/test --test-depends --deps-only .
-      - name: Install App::Prove6
-        run: zef install --/test App::Prove6
       - name: Run Tests
-        run: prove6 -I. t
+        run: zef test -I. t
