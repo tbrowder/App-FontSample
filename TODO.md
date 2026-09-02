@@ -6,14 +6,12 @@ App::FontSample TODO
 SUBTITLE
 ========
 
-Planned improvements after the first usable release
+Planned improvements after the current release
 
 PURPOSE
 =======
 
-This file contains planned work for `App::FontSample`. Keeping future work here allows `README.rakudoc` to concentrate on helping a new user install and use the current release.
-
-The items below are plans, not promises about a particular release.
+This file contains planned work for `App::FontSample`. These items are not current capabilities and therefore are intentionally kept out of the user documentation in `README.rakudoc`.
 
 LAYOUTS
 =======
@@ -22,7 +20,7 @@ LAYOUTS
 
   * Continue improving the comparison and collection layouts for larger font sets and more varied sample text.
 
-  * Consider additional layouts such as language samples, font metrics, and Unicode-oriented glyph charts where they add capabilities beyond the current layouts.
+  * Consider additional layouts for language samples and font metrics.
 
 CHARACTER AND GLYPH DISPLAY
 ===========================
@@ -46,16 +44,16 @@ LANGUAGE SAMPLES
 
   * Document which sample languages are covered by commonly used font families.
 
-  * Make it easy for applications to supply additional language samples without modifying `App::FontSample`.
+  * Continue making it easy for applications to supply additional language samples without modifying `App::FontSample`.
 
 JSON AND COMMAND-LINE USE
 =========================
 
-  * Add polished, version-controlled JSON examples for specimen, comparison, collection, and character-grid output.
+  * Add separate version-controlled JSON example files for each principal layout.
 
   * Add more tests that exercise the installed `font-sample` command.
 
-  * Add tests for multi-page comparison and character output.
+  * Add tests that explicitly verify multi-page comparison and character output.
 
   * Review command-line diagnostics and error messages for missing fonts, bad paths, unsupported layouts, and malformed configuration files.
 
@@ -80,9 +78,7 @@ API AND INTERNAL CLEANUP
 DOCUMENTATION
 =============
 
-  * Keep the README focused on the shortest path from installation to a successful PDF.
-
-  * Add visual examples of the principal layouts when stable examples are available.
+  * Add visual PDF examples to the published documentation when there is a practical way to distribute and maintain them.
 
   * Keep optional native-library requirements with the documentation for the font loader or provider that requires them rather than presenting them as requirements of the provider-neutral core.
 
