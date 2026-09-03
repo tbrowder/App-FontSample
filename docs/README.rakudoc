@@ -72,6 +72,9 @@ create-font-sample(
 );
 =end code
 
+See an example at L<./documents/specimen.pdf>.
+
+
 An explicit pangram must also identify its language so the PDF can label it:
 
 =begin code :lang<raku>
@@ -309,12 +312,19 @@ PDFs, one for each current layout:
 =item C<example-collection.pdf>
 =item C<example-characters.pdf>
 
+Run the examples like this:
+
+=begin code
+raku -Ilib examples/current-capabilities.raku
+=end code
+
 =head1 TESTING
 
-Run the normal test suite with:
+Run the normal test suite with C<mi6 test> (for modules under
+C<App::Mi6> management) or C<zef .>.
 
 =begin code :lang<text>
-zef test .
+mi6 test
 =end code
 
 The normal test suite does not require C<NotoFonts-OT>.

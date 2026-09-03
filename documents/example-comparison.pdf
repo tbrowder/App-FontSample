@@ -1,0 +1,134 @@
+%PDF-1.4
+%¥±ë¼
+1 0 obj
+<<
+  /CreationDate (D:20260903071921-05'00')
+  /Creator (PDF::Class-0.5.30; PDF::Content-0.9.11; PDF-0.6.15; Raku-6.d)
+  /Producer (PDF::API6-0.2.10)
+>>
+endobj
+
+2 0 obj
+<< /Type /Catalog /Pages 3 0 R >>
+endobj
+
+3 0 obj
+<< /Type /Pages /Count 1 /Kids [ 4 0 R ] >>
+endobj
+
+4 0 obj
+<<
+  /Type /Page
+  /Contents 5 0 R
+  /MediaBox [ 0 0 612 792 ]
+  /Parent 3 0 R
+  /Resources << /Font << /F1 6 0 R /F2 7 0 R /F3 9 0 R /F4 10 0 R >> >>
+>>
+endobj
+
+5 0 obj
+<< /Length 672 >> stream
+q
+  BT
+    /F1 9 Tf
+    1 0 0 1 36 756 Tm
+    (Font Comparison — 18 pt) Tj
+    9.9 TL
+    T*
+    /F1 7 Tf
+    1 0 0 1 36 728 Tm
+    (Times-Roman) Tj
+    7.7 TL
+    T*
+    /F2 18 Tf
+    1 0 0 1 36 718 Tm
+    (The quick brown fox jumps over the lazy dog. 0123456789) Tj
+    19.8 TL
+    T*
+    /F1 7 Tf
+    1 0 0 1 36 686.6 Tm
+    (Helvetica) Tj
+    7.7 TL
+    T*
+    /F3 18 Tf
+    1 0 0 1 36 676.6 Tm
+    (The quick brown fox jumps over the lazy dog. 0123456789) Tj
+    19.8 TL
+    T*
+    /F1 7 Tf
+    1 0 0 1 36 645.2 Tm
+    (Courier) Tj
+    7.7 TL
+    T*
+    /F4 18 Tf
+    1 0 0 1 36 635.2 Tm
+    (The quick brown fox jumps over the lazy dog.) Tj
+    19.8 TL
+    T*
+  ET
+Q
+endstream
+endobj
+
+6 0 obj
+<<
+  /Type /Font
+  /Subtype /Type1
+  /BaseFont /Helvetica
+  /Encoding /WinAnsiEncoding
+>>
+endobj
+
+7 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Times-Roman /Encoding 8 0 R >>
+endobj
+
+8 0 obj
+<<
+  /Type /Encoding
+  /BaseEncoding /WinAnsiEncoding
+  /Differences [ 1 /numbersign /minus ]
+>>
+endobj
+
+9 0 obj
+<<
+  /Type /Font
+  /Subtype /Type1
+  /BaseFont /Helvetica
+  /Encoding /WinAnsiEncoding
+>>
+endobj
+
+10 0 obj
+<<
+  /Type /Font
+  /Subtype /Type1
+  /BaseFont /Courier
+  /Encoding /WinAnsiEncoding
+>>
+endobj
+
+xref
+0 11
+0000000000 65535 f 
+0000000015 00000 n 
+0000000184 00000 n 
+0000000234 00000 n 
+0000000294 00000 n 
+0000000464 00000 n 
+0000001188 00000 n 
+0000001294 00000 n 
+0000001383 00000 n 
+0000001496 00000 n 
+0000001602 00000 n 
+trailer
+<<
+  /ID [ <dadf5303f27e483a5504c11a0514db29> <dadf5303f27e483a5504c11a0514db29> ]
+  /Info 1 0 R
+  /Root 2 0 R
+  /Size 11
+>>
+startxref
+1707
+%%EOF

@@ -1,0 +1,134 @@
+%PDF-1.4
+%¥±ë¼
+1 0 obj
+<<
+  /CreationDate (D:20260903071921-05'00')
+  /Creator (PDF::Class-0.5.30; PDF::Content-0.9.11; PDF-0.6.15; Raku-6.d)
+  /Producer (PDF::API6-0.2.10)
+>>
+endobj
+
+2 0 obj
+<< /Type /Catalog /Pages 3 0 R >>
+endobj
+
+3 0 obj
+<< /Type /Pages /Count 1 /Kids [ 4 0 R ] >>
+endobj
+
+4 0 obj
+<<
+  /Type /Page
+  /Contents 5 0 R
+  /MediaBox [ 0 0 612 792 ]
+  /Parent 3 0 R
+  /Resources << /Font << /F1 6 0 R /F2 7 0 R /F3 9 0 R /F4 10 0 R >> >>
+>>
+endobj
+
+5 0 obj
+<< /Length 617 >> stream
+q
+  BT
+    /F1 9 Tf
+    1 0 0 1 36 756 Tm
+    (Font Collection — 14 pt) Tj
+    9.9 TL
+    T*
+    /F1 7 Tf
+    1 0 0 1 36 728 Tm
+    (Times-Roman) Tj
+    7.7 TL
+    T*
+    /F2 14 Tf
+    1 0 0 1 36 719 Tm
+    (Hamburgefonts 0123456789 Aa Bb Cc) Tj
+    15.4 TL
+    T*
+    /F1 7 Tf
+    1 0 0 1 36 695.2 Tm
+    (Helvetica) Tj
+    7.7 TL
+    T*
+    /F3 14 Tf
+    1 0 0 1 36 686.2 Tm
+    (Hamburgefonts 0123456789 Aa Bb Cc) Tj
+    15.4 TL
+    T*
+    /F1 7 Tf
+    1 0 0 1 36 662.4 Tm
+    (Courier) Tj
+    7.7 TL
+    T*
+    /F4 14 Tf
+    1 0 0 1 36 653.4 Tm
+    (Hamburgefonts 0123456789 Aa Bb Cc) Tj
+    15.4 TL
+    T*
+  ET
+Q
+endstream
+endobj
+
+6 0 obj
+<<
+  /Type /Font
+  /Subtype /Type1
+  /BaseFont /Helvetica
+  /Encoding /WinAnsiEncoding
+>>
+endobj
+
+7 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Times-Roman /Encoding 8 0 R >>
+endobj
+
+8 0 obj
+<<
+  /Type /Encoding
+  /BaseEncoding /WinAnsiEncoding
+  /Differences [ 1 /numbersign /minus ]
+>>
+endobj
+
+9 0 obj
+<<
+  /Type /Font
+  /Subtype /Type1
+  /BaseFont /Helvetica
+  /Encoding /WinAnsiEncoding
+>>
+endobj
+
+10 0 obj
+<<
+  /Type /Font
+  /Subtype /Type1
+  /BaseFont /Courier
+  /Encoding /WinAnsiEncoding
+>>
+endobj
+
+xref
+0 11
+0000000000 65535 f 
+0000000015 00000 n 
+0000000184 00000 n 
+0000000234 00000 n 
+0000000294 00000 n 
+0000000464 00000 n 
+0000001133 00000 n 
+0000001239 00000 n 
+0000001328 00000 n 
+0000001441 00000 n 
+0000001547 00000 n 
+trailer
+<<
+  /ID [ <27881c2bb5c6a37bba5b0720a5dd79dc> <27881c2bb5c6a37bba5b0720a5dd79dc> ]
+  /Info 1 0 R
+  /Root 2 0 R
+  /Size 11
+>>
+startxref
+1652
+%%EOF

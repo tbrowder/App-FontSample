@@ -76,6 +76,8 @@ create-font-sample(
 );
 ```
 
+See an example at [./documents/specimen.pdf](./documents/specimen.pdf).
+
 An explicit pangram must also identify its language so the PDF can label it:
 
 ```raku
@@ -313,13 +315,17 @@ EXAMPLES
 
   * `example-characters.pdf`
 
+Run the examples like this:
+
+    raku -Ilib examples/current-capabilities.raku
+
 TESTING
 =======
 
-Run the normal test suite with:
+Run the normal test suite with `mi6 test` (for modules under `App::Mi6` management) or `zef .`.
 
 ```text
-zef test .
+mi6 test
 ```
 
 The normal test suite does not require `NotoFonts-OT`.
