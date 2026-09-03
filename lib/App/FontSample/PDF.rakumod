@@ -26,7 +26,7 @@ method render(
     my @entries;
     @entries.push: $entry;
 
-    return self.render-collection( @entries,
+    return self.render-collection(@entries,
         :$output,
         |%options,
     );

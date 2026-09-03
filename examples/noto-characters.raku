@@ -5,7 +5,7 @@ use v6.d;
 use NotoFonts-OT;
 use App::FontSample;
 
-my Bool $debug = False;
+my $debug = 0;
 my Str $code = 'NotoSerif-Regular';
 
 my $font = get-loaded-font $code;

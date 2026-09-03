@@ -13,7 +13,7 @@ use App::FontSample::FontEntry;
 # Adjust these calls if the provider's final public API uses different names.
 my @entries;
 
-my $debug = 1;
+my $debug = 0;
 for <NotoSerif-Regular NotoSerif-Bold NotoSans-Regular> -> $code {
     # code is a font name or alias, get the loaded font
     my $font = get-loaded-font $code;

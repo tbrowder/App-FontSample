@@ -22,7 +22,7 @@ create-font-sample(
     $times,
     :name<Times-Roman>,
     :layout<specimen>,
-    :title<Font Specimen>,
+    :title("Font Specimen"),
     :language<en>,
     :output<example-specimen.pdf>,
 );
@@ -47,7 +47,7 @@ my @entries;
 create-font-collection-sample(
     @entries,
     :layout<comparison>,
-    :title<Font Comparison>,
+    :title("Font Comparison"),
     :comparison-size(18),
     :text(
         'The quick brown fox jumps over the lazy dog. 0123456789'
@@ -58,7 +58,7 @@ create-font-collection-sample(
 create-font-collection-sample(
     @entries,
     :layout<collection>,
-    :title<Font Collection>,
+    :title("Font Collection"),
     :sample-size(14),
     :leading-ratio(0.20),
     :text(
@@ -71,7 +71,7 @@ create-font-sample(
     $times,
     :name<Times-Roman>,
     :layout<characters>,
-    :title<Character Sample>,
+    :title("Character Sample"),
     :characters(
         'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     ),

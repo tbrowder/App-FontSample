@@ -9,6 +9,7 @@ use App::FontSample::SampleText;
 
 unit module App::FontSample;
 
+my $debug = 1;
 sub create-font-sample(
     PDF::Content::FontObj:D $font,
     Str:D :$name!,
@@ -27,6 +28,12 @@ sub create-font-sample(
     --> IO::Path:D
 ) is export {
     note 'create-font-sample: start' if $debug;
+    if $debug {
+        note "DEBUG: title = '$title'";
+        note "DEBUG: name  = '$name'";
+        note "DEBUG: output   = '$output'";
+        ; # ok
+    }
 
     my Str $paper-name = $media // $paper;
 

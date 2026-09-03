@@ -8,7 +8,7 @@ use NotoFonts-OT;
 use App::FontSample;
 use App::FontSample::FontEntry;
 
-my Bool $debug = True;
+my $debug = 0;
 
 my @codes =
     'NotoSerif-Regular',
@@ -48,7 +48,7 @@ my IO::Path $output =
     create-font-collection-sample(
         @entries,
         :layout<collection>,
-        :title<NotoFonts-OT Font Collection>,
+        :title("NotoFonts-OT Font Collection"),
         :sample-size(14),
         :leading-ratio(0.20),
         :text(
