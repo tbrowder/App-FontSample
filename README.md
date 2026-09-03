@@ -76,7 +76,7 @@ create-font-sample(
 );
 ```
 
-See an example at [./documents/specimen.pdf](./documents/specimen.pdf).
+See an example at [View the document](./documents/specimen.pdf).
 
 An explicit pangram must also identify its language so the PDF can label it:
 
