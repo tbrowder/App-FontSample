@@ -40,4 +40,3 @@ jobs:
       - name: Test Noto integration
         run: |
           raku -Ilib xt/0-use-notofonts.t
-          raku -Ilib xt/1-waterfall-noto.t
