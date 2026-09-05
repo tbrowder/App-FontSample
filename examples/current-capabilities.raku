@@ -1,5 +1,4 @@
 #!/usr/bin/env raku
-
 use v6.d;
 
 use PDF::API6;
@@ -24,7 +23,7 @@ create-font-sample(
     :layout<specimen>,
     :title("Font Specimen"),
     :language<en>,
-    :output<example-specimen.pdf>,
+    :output<./examples/pdf/example-specimen.pdf>,
 );
 
 my @entries;
@@ -52,7 +51,7 @@ create-font-collection-sample(
     :text(
         'The quick brown fox jumps over the lazy dog. 0123456789'
     ),
-    :output<example-comparison.pdf>,
+    :output<./examples/pdf/example-comparison.pdf>,
 );
 
 create-font-collection-sample(
@@ -64,7 +63,7 @@ create-font-collection-sample(
     :text(
         'Hamburgefonts 0123456789 Aa Bb Cc'
     ),
-    :output<example-collection.pdf>,
+    :output<./examples/pdf/example-collection.pdf>,
 );
 
 create-font-sample(
@@ -77,7 +76,7 @@ create-font-sample(
     ),
     :columns(8),
     :glyph-size(30),
-    :output<example-characters.pdf>,
+    :output<./examples/pdf/example-characters.pdf>,
 );
 
 say 'Created:';

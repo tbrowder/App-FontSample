@@ -69,54 +69,54 @@ method render-page(
             .say: (%options<title> // 'FONT SPECIMEN')
                 ~ " — $display-name";
 
-            $y -= 28;
+            $y -= 30;
 
             .font = $entry.font, 28;
             .text-position = [$left, $y];
             .say: $display-name,
                 :width($paper.usable-width);
 
-            $y -= 28;
+            $y -= 34;
 
             if $display-name ne $entry.name {
                 .font = $label-font, 8;
                 .text-position = [$left, $y];
                 .say: "Font file/name: {$entry.name}";
 
-                $y -= 20;
+                $y -= 26;
             }
 
             .font = $label-font, 8;
             .text-position = [$left, $y];
             .say: 'ALPHABET — 15 pt';
 
-            $y -= 15;
+            $y -= 25;
 
             .font = $entry.font, 15;
             .text-position = [$left, $y];
             .say: $DEFAULT-ALPHABET,
                 :width($paper.usable-width);
 
-            $y -= 24;
+            $y -= 30;
 
             .font = $label-font, 8;
             .text-position = [$left, $y];
             .say: 'NUMERALS AND PUNCTUATION — 14 pt';
 
-            $y -= 15;
+            $y -= 25;
 
             .font = $entry.font, 14;
             .text-position = [$left, $y];
             .say: $DEFAULT-NUMBERS,
                 :width($paper.usable-width);
 
-            $y -= 30;
+            $y -= 32;
 
             .font = $label-font, 8;
             .text-position = [$left, $y];
             .say: $pangram-label.uc ~ ' — 18 pt';
 
-            $y -= 20;
+            $y -= 30;
 
             .font = $entry.font, 18;
             .text-position = [$left, $y];
@@ -129,11 +129,11 @@ method render-page(
             .text-position = [$left, $y];
             .say: 'SIZE WATERFALL — point size shown at left';
 
-            $y -= 18;
+            $y -= 24;
 
             for @sizes -> $size {
                 my Numeric $line-height =
-                    $size * 1.35;
+                    $size * 1.20 + 13;
 
                 last
                     if $y - $line-height

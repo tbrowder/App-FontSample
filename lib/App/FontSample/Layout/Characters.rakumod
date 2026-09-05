@@ -7,7 +7,10 @@ unit class App::FontSample::Layout::Characters
 my constant $DEFAULT-COLUMNS = 8;
 my constant $DEFAULT-GLYPH-SIZE = 30;
 my constant $TITLE-HEIGHT = 28;
-my constant $CELL-HEIGHT = 58;
+my constant $CELL-HEIGHT = 72;
+my constant $LABEL-HEIGHT = 16;
+my constant $OUTER-LINE-WIDTH = 0.6;
+my constant $GUIDE-LINE-WIDTH = 0.2;
 
 method render-collection(
     :$pdf!,
@@ -83,57 +86,98 @@ method render-collection(
                     .font = $label-font, 9;
                     .text-position = [$left, $top];
                     .say: "$title — $display-name — {$glyph-size} pt";
+                }
 
-                    my Numeric $grid-top =
-                        $top - $TITLE-HEIGHT;
+                my Numeric $grid-top =
+                    $top - $TITLE-HEIGHT;
 
-                    my Int $index = $offset;
-                    my Int $slot = 0;
+                my Int $index = $offset;
+                my Int $slot = 0;
 
-                    while $index < $limit {
-                        my Str $character =
-                            @characters[$index];
+                while $index < $limit {
+                    my Str $character =
+                        @characters[$index];
 
-                        my Int $row =
-                            $slot div $columns;
+                    my Int $row =
+                        $slot div $columns;
 
-                        my Int $column =
-                            $slot % $columns;
+                    my Int $column =
+                        $slot % $columns;
 
-                        my Numeric $cell-left =
-                            $left + $column * $cell-width;
+                    my Numeric $cell-left =
+                        $left + $column * $cell-width;
 
-                        my Numeric $cell-top =
-                            $grid-top - $row * $CELL-HEIGHT;
+                    my Numeric $cell-top =
+                        $grid-top - $row * $CELL-HEIGHT;
 
-                        my Numeric $glyph-left =
-                            $cell-left + $cell-width * 0.28;
+                    my Numeric $cell-bottom =
+                        $cell-top - $CELL-HEIGHT;
 
-                        my Numeric $glyph-y =
-                            $cell-top - 28;
+                    my Numeric $cell-center =
+                        $cell-left + $cell-width / 2;
 
+                    my Numeric $baseline =
+                        $cell-bottom + $LABEL-HEIGHT + 8;
+
+                    # This first pass uses a half-em x-height guide.
+                    # It keeps the layout independent of font-provider
+                    # implementation details.
+                    my Numeric $x-height =
+                        $glyph-size * 0.50;
+
+                    my Numeric $x-height-y =
+                        $baseline + $x-height;
+
+                    $gfx.graphics: {
+                        .LineWidth = $OUTER-LINE-WIDTH;
+                        .Rectangle(
+                            $cell-left,
+                            $cell-bottom,
+                            $cell-width,
+                            $CELL-HEIGHT,
+                        );
+                        .Stroke;
+
+                        .LineWidth = $GUIDE-LINE-WIDTH;
+
+                        .MoveTo($cell-left, $baseline);
+                        .LineTo(
+                            $cell-left + $cell-width,
+                            $baseline,
+                        );
+                        .Stroke;
+
+                        .MoveTo($cell-left, $x-height-y);
+                        .LineTo(
+                            $cell-left + $cell-width,
+                            $x-height-y,
+                        );
+                        .Stroke;
+                    }
+
+                    $gfx.text: {
                         .font = $entry.font, $glyph-size;
-                        .text-position = [$glyph-left, $glyph-y];
-                        .say: $character;
+                        .text-position = [$cell-center, $baseline];
+                        .say: $character,
+                            :align<center>,
+                            :baseline-shift<alphabetic>;
 
                         my Str $code = sprintf(
                             'U+%04X',
                             $character.ord,
                         );
 
-                        my Numeric $label-left =
-                            $cell-left + 4;
-
                         my Numeric $label-y =
-                            $cell-top - 48;
+                            $cell-bottom + 4;
 
                         .font = $label-font, 7;
-                        .text-position = [$label-left, $label-y];
-                        .say: $code;
-
-                        ++$index;
-                        ++$slot;
+                        .text-position = [$cell-center, $label-y];
+                        .say: $code,
+                            :align<center>;
                     }
+
+                    ++$index;
+                    ++$slot;
                 }
             }
 
