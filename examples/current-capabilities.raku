@@ -61,7 +61,7 @@ create-font-collection-sample(
     :sample-size(14),
     :leading-ratio(0.20),
     :text(
-        'Hamburgefonts 0123456789 Aa Bb Cc'
+        'Aa Bb Cc Dd Ee Ff Gg 0123456789'
     ),
     :output<./examples/pdf/example-collection.pdf>,
 );

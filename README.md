@@ -91,13 +91,18 @@ create-font-sample(
 );
 ```
 
+NOTE
+----
+
+The *collection* and *comparison* sections below render each font at the same nominal point size. Visible character heights may differ because each typeface has its own font metrics.
+
 comparison
 ----------
 
 The `comparison` layout displays the same text in several fonts at one stated point size. The font name is shown above each sample. The layout continues onto additional pages when needed.
 
 ```raku
-create-font-collection-sample(
+create-font-comparison-sample(
     @entries,
     :layout<comparison>,
     :title<Font Comparison>,
@@ -120,7 +125,7 @@ create-font-collection-sample(
     :layout<collection>,
     :title<Font Collection>,
     :sample-size(14),
-    :text('Hamburgefonts 0123456789 Aa Bb Cc'),
+    :text('Aa Bb Cc Dd Ee Ff Gg 0123456789'),
     :output<collection.pdf>,
 );
 ```
