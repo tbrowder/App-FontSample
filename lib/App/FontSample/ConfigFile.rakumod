@@ -2,7 +2,7 @@ use v6.d;
 use JSON::Fast;
 use App::FontSample::Config;
 
-unit class App::FontSample::ConfigFile;
+unit class App::FontSample::ConFigFile;
 
 has IO::Path:D $.source-file is required;
 has IO::Path:D $.base-dir is required;
@@ -11,7 +11,7 @@ has $.debug;
 
 submethod TWEAK {
     if $!debug {
-        note "DEBUG ?: generating Configfile object";
+        note "DEBUG: generating ConfigFile object";
     }
 }
 
