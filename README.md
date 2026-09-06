@@ -17,15 +17,15 @@ DESCRIPTION
 
 `App::FontSample` does not provide a font collection. Library callers supply one or more `PDF::Content::FontObj` objects. The installed `font-sample` program can load an OTF or TTF file directly.
 
-The current release supports Letter and A4 paper, portrait and landscape orientation, configurable margins, JSON job files, registered language pangrams, and four layouts (click to view on GitHub):
+The current release supports Letter and A4 paper, portrait and landscape orientation, configurable margins, JSON job files, registered language pangrams, and four layouts (click each link to view on GitHub):
 
   * [speciman](./examples/pdf/example-specimen.pdf)
 
-  * `comparison`
+  * [comparison](./examples/pdf/example-comparison.pdf)
 
-  * `collection`
+  * [collection](./examples/pdf/example-collection.pdf)
 
-  * `characters`
+  * [characters](./examples/pdf/example-characters.pdf)
 
 INSTALLATION
 ============

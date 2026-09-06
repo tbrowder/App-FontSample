@@ -15,12 +15,12 @@ program can load an OTF or TTF file directly.
 
 The current release supports Letter and A4 paper, portrait and landscape
 orientation, configurable margins, JSON job files, registered language
-pangrams, and four layouts (click to view on GitHub):
+pangrams, and four layouts (click each link to view on GitHub):
 
-=item L<speciman | ./examples/pdf/example-specimen.pdf>
-=item C<comparison>
-=item C<collection>
-=item C<characters>
+=item L<speciman   | ./examples/pdf/example-specimen.pdf>
+=item L<comparison | ./examples/pdf/example-comparison.pdf>
+=item L<collection | ./examples/pdf/example-collection.pdf>
+=item L<characters | ./examples/pdf/example-characters.pdf>
 
 =head1 INSTALLATION
 
