@@ -1,11 +1,12 @@
 use v6.d;
+
 use App::FontSample::Layout;
 
 unit class App::FontSample::Layout::Collection
     does App::FontSample::Layout;
 
 my constant $DEFAULT-TEXT =
-    'Hamburgefonts 0123456789 Aa Bb Cc';
+    'Aa Bb Cc Dd Ee Ff Gg 0123456789';
 
 method render-collection(
     :$pdf!,
@@ -24,8 +25,8 @@ method render-collection(
     my Numeric $line-height =
         $sample-size * (1 + $leading-ratio);
 
-    my Numeric $label-height = 9;
-    my Numeric $row-gap = 7;
+    my Numeric $label-height = 14;
+    my Numeric $row-gap = 8;
 
     my Numeric $row-height =
         $label-height + $line-height + $row-gap;
@@ -61,13 +62,15 @@ method render-collection(
             for $entries.List -> $entry {
                 .font = $label-font, 7;
                 .text-position = [$left, $y];
-                .say: $entry.name;
+                .say: $entry.display-name;
 
                 $y -= $label-height;
 
                 .font = $entry.font, $sample-size;
                 .text-position = [$left, $y];
-                .say: $text;
+                .say: $text,
+                    :width($paper.usable-width),
+                    :height($line-height);
 
                 $y -= $line-height + $row-gap;
             }

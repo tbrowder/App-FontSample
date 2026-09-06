@@ -1,4 +1,5 @@
 use v6.d;
+
 use App::FontSample::Layout;
 
 unit class App::FontSample::Layout::Comparison
@@ -9,8 +10,8 @@ my constant $DEFAULT-TEXT =
 
 my constant $DEFAULT-SIZE = 18;
 my constant $TITLE-HEIGHT = 28;
-my constant $LABEL-HEIGHT = 10;
-my constant $ROW-GAP = 8;
+my constant $LABEL-HEIGHT = 18;
+my constant $ROW-GAP = 14;
 
 method render-collection(
     :$pdf!,
@@ -89,6 +90,7 @@ method render-collection(
                         :height($sample-height);
 
                     $y -= $sample-height + $ROW-GAP;
+
                     ++$index;
                 }
             }
