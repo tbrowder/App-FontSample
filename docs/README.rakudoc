@@ -15,9 +15,9 @@ program can load an OTF or TTF file directly.
 
 The current release supports Letter and A4 paper, portrait and landscape
 orientation, configurable margins, JSON job files, registered language
-pangrams, and four layouts:
+pangrams, and four layouts (click to view on GitHub):
 
-=item C<specimen>   L<speciman | ./examples/pdf/example-specimen.pdf>
+=item L<speciman | ./examples/pdf/example-specimen.pdf>
 =item C<comparison>
 =item C<collection>
 =item C<characters>
