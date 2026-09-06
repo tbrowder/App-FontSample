@@ -17,7 +17,7 @@ The current release supports Letter and A4 paper, portrait and landscape
 orientation, configurable margins, JSON job files, registered language
 pangrams, and four layouts:
 
-=item C<specimen>
+=item C<specimen>   L<speciman | ./examples/pdf/example-specimen.pdf>
 =item C<comparison>
 =item C<collection>
 =item C<characters>
