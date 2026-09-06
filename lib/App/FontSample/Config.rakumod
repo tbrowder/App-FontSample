@@ -1,5 +1,5 @@
 use v6.d;
-use JSON::Fast;
+
 use App::FontSample::SampleText;
 
 unit class App::FontSample::Config;
@@ -26,29 +26,8 @@ has $.debug;
 
 submethod TWEAK {
     if $!debug {
-        note "DEBUG ?: generating PDF file '$!title'";
+        note "DEBUG: generating Config object for '$!title'";
     }
-}
-
-method from-file(
-    IO() $file
-    --> App::FontSample::Config:D
-) {
-    my IO::Path $path = $file.IO;
-
-    die "JSON configuration file does not exist: $path"
-        unless $path.f;
-
-    my $decoded = from-json($path.slurp);
-
-    die 'The JSON configuration root must be an object'
-        unless $decoded ~~ Associative;
-
-    return self.from-data(
-        $decoded,
-        :source-file($path),
-        :base-dir($path.parent),
-    );
 }
 
 method from-data(
