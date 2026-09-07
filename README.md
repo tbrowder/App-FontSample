@@ -273,6 +273,11 @@ For example:
 }
 ```
 
+REPRODUCIBLE PDF OUTPUT
+=======================
+
+For generated examples or other PDFs that should be byte-for-byte reproducible, use `:reproducible` from Raku or `--reproducible` in direct command-line mode. JSON jobs may use `"reproducible": true`. Normal PDF generation retains the default unique document identification and metadata behavior.
+
 OPTIONAL NOTOFONTS-OT USE
 =========================
 

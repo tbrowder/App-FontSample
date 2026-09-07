@@ -32,6 +32,7 @@ sub usage(Int:D $status = 0 --> Nil) {
                            collection
       --paper=Letter|A4    Paper size; default: Letter
       --landscape          Use landscape orientation
+      --reproducible       Generate reproducible PDF metadata and ID
       --margin=POINTS      Margin in PDF points; default: 36
       --language=CODE      Use a registered ISO language pangram
       --text=TEXT          Main sample text
@@ -61,6 +62,9 @@ for @*ARGS -> $arg {
     }
     elsif $arg eq '--landscape' {
         %options<landscape> = True;
+    }
+    elsif $arg eq '--reproducible' {
+        %options<reproducible> = True;
     }
     elsif $arg ~~ /^ '--' (<[A..Za..z0..9_-]>+) '=' (.*) $/ {
         %options{~$0} = ~$1;
@@ -137,7 +141,8 @@ sub render-config(
     );
 
     my %render-options =
-        output => $config.output;
+        output       => $config.output,
+        reproducible => $config.reproducible;
 
     %render-options<text> = $config.text
         if $config.text.defined;
@@ -238,7 +243,8 @@ sub render-direct-options(%options --> Nil) {
         name   => $name,
         family => (%options<family> // ''),
         style  => (%options<style> // ''),
-        output => %options<output>;
+        output => %options<output>,
+        reproducible => so (%options<reproducible> // False);
 
     %render-options<text> = %options<text>
         if %options<text>:exists;

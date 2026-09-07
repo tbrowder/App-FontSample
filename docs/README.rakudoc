@@ -274,6 +274,13 @@ For example:
 }
 =end code
 
+=head1 REPRODUCIBLE PDF OUTPUT
+
+For generated examples or other PDFs that should be byte-for-byte reproducible,
+use C<:reproducible> from Raku or C<--reproducible> in direct command-line mode.
+JSON jobs may use C<"reproducible": true>. Normal PDF generation retains the
+default unique document identification and metadata behavior.
+
 =head1 OPTIONAL NOTOFONTS-OT USE
 
 C<NotoFonts-OT> is not a dependency of C<App::FontSample>. It is one

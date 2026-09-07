@@ -24,6 +24,7 @@ create-font-sample(
     :title("Font Specimen"),
     :language<en>,
     :output<./examples/pdf/example-specimen.pdf>,
+    :reproducible,
 );
 
 my @entries;
@@ -52,6 +53,7 @@ create-font-collection-sample(
         'The quick brown fox jumps over the lazy dog. 0123456789'
     ),
     :output<./examples/pdf/example-comparison.pdf>,
+    :reproducible,
 );
 
 create-font-collection-sample(
@@ -64,6 +66,7 @@ create-font-collection-sample(
         'Aa Bb Cc Dd Ee Ff Gg 0123456789'
     ),
     :output<./examples/pdf/example-collection.pdf>,
+    :reproducible,
 );
 
 create-font-sample(
@@ -77,6 +80,7 @@ create-font-sample(
     :columns(8),
     :glyph-size(30),
     :output<./examples/pdf/example-characters.pdf>,
+    :reproducible,
 );
 
 say 'Created:';

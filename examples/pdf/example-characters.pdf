@@ -1,32 +1,24 @@
 %PDF-1.4
 %¥±ë¼
 1 0 obj
-<<
-  /CreationDate (D:20260907152118-05'00')
-  /Creator (PDF::Class-0.5.30; PDF::Content-0.9.11; PDF-0.6.15; Raku-6.d)
-  /Producer (PDF::API6-0.2.10)
->>
+<< /Type /Catalog /Pages 2 0 R >>
 endobj
 
 2 0 obj
-<< /Type /Catalog /Pages 3 0 R >>
+<< /Type /Pages /Count 1 /Kids [ 3 0 R ] >>
 endobj
 
 3 0 obj
-<< /Type /Pages /Count 1 /Kids [ 4 0 R ] >>
-endobj
-
-4 0 obj
 <<
   /Type /Page
-  /Contents 5 0 R
+  /Contents 4 0 R
   /MediaBox [ 0 0 612 792 ]
-  /Parent 3 0 R
-  /Resources << /Font << /F1 6 0 R /F2 7 0 R >> >>
+  /Parent 2 0 R
+  /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >>
 >>
 endobj
 
-5 0 obj
+4 0 obj
 << /Length 10817 >> stream
 q
   BT
@@ -904,7 +896,7 @@ Q
 endstream
 endobj
 
-6 0 obj
+5 0 obj
 <<
   /Type /Font
   /Subtype /Type1
@@ -913,11 +905,11 @@ endobj
 >>
 endobj
 
-7 0 obj
-<< /Type /Font /Subtype /Type1 /BaseFont /Times-Roman /Encoding 8 0 R >>
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Times-Roman /Encoding 7 0 R >>
 endobj
 
-8 0 obj
+7 0 obj
 <<
   /Type /Encoding
   /BaseEncoding /WinAnsiEncoding
@@ -926,23 +918,21 @@ endobj
 endobj
 
 xref
-0 9
+0 8
 0000000000 65535 f 
 0000000015 00000 n 
-0000000184 00000 n 
-0000000234 00000 n 
-0000000294 00000 n 
-0000000443 00000 n 
-0000011314 00000 n 
-0000011420 00000 n 
-0000011509 00000 n 
+0000000065 00000 n 
+0000000125 00000 n 
+0000000274 00000 n 
+0000011145 00000 n 
+0000011251 00000 n 
+0000011340 00000 n 
 trailer
 <<
-  /ID [ <2075ca1b905ebf9607cc94b88f3cf576> <2075ca1b905ebf9607cc94b88f3cf576> ]
-  /Info 1 0 R
-  /Root 2 0 R
-  /Size 9
+  /ID [ (AppFontSample0001) (AppFontSample0001) ]
+  /Root 1 0 R
+  /Size 8
 >>
 startxref
-11622
+11453
 %%EOF

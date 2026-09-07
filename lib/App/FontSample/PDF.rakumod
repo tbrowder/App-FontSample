@@ -61,6 +61,7 @@ method render-font(
 method render-collection(
     Positional:D $entries where *.elems > 0,
     IO() :$output! where *.so,
+    Bool:D :$reproducible = False,
     *%options,
     --> IO::Path:D
 ) {
@@ -94,7 +95,17 @@ method render-collection(
     note "render-collection: saving '$path'"
         if $!debug;
 
-    $pdf.save-as: $path.Str;
+    if $reproducible {
+        $pdf.id = 'AppFontSample0001';
+
+        $pdf.save-as(
+            $path.Str,
+            :!info,
+        );
+    }
+    else {
+        $pdf.save-as: $path.Str;
+    }
 
     note 'render-collection: finished'
         if $!debug;

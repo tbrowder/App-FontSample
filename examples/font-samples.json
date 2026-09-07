@@ -3,7 +3,8 @@
         "paper": "Letter",
         "landscape": false,
         "margin": 36,
-        "language": "en"
+        "language": "en",
+        "reproducible": true
     },
     "samples": [
         {

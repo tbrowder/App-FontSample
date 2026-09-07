@@ -21,6 +21,7 @@ my $json = qq:to/END/;
     "title": "JSON Configuration Test",
     "paper": "Letter",
     "margin": 36,
+    "reproducible": true,
     "fonts": [
         \{
             "file": "$font-path",

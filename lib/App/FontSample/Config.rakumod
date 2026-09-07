@@ -12,6 +12,7 @@ has Bool:D $.landscape = False;
 has Numeric:D $.margin = 36;
 has Str:D $.title = 'Font Samples';
 has Str:D $.layout = 'specimen';
+has Bool:D $.reproducible = False;
 has Str $.language;
 has Str $.text;
 has Str $.pangram;
@@ -118,6 +119,7 @@ method from-data(
         margin      => $margin,
         title       => (%data<title> // 'Font Samples'),
         layout      => $layout,
+        reproducible => so (%data<reproducible> // False),
         sizes       => @sizes.List,
         fonts       => @fonts.List;
 
