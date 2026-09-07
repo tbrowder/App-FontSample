@@ -2,7 +2,7 @@ use v6.d;
 use JSON::Fast;
 use App::FontSample::Config;
 
-unit class App::FontSample::ConFigFile;
+unit class App::FontSample::ConfigFile;
 
 has IO::Path:D $.source-file is required;
 has IO::Path:D $.base-dir is required;
@@ -17,7 +17,7 @@ submethod TWEAK {
 
 method from-file(
     IO() $file
-    --> App::FontSample::ConfigFile:D
+    --> ::?CLASS:D
 ) {
     my IO::Path $path = $file.IO;
 

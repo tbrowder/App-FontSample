@@ -1,0 +1,13 @@
+{
+    "output": "json-test.pdf",
+    "layout": "specimen",
+    "title": "JSON Configuration Test",
+    "paper": "Letter",
+    "margin": 36,
+    "fonts": [
+        {
+            "file": "test-font.otf",
+            "name": "Test Font"
+        }
+    ]
+}

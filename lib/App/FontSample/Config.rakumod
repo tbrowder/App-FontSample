@@ -34,7 +34,7 @@ method from-data(
     Associative:D $decoded,
     IO::Path:D :$source-file!,
     IO::Path:D :$base-dir!,
-    --> App::FontSample::Config:D
+    --> ::?CLASS:D
 ) {
     my %data = $decoded.Hash;
 

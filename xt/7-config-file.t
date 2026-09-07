@@ -1,6 +1,7 @@
 use v6.d;
 use Test;
 
+use App::FontSample;
 use App::FontSample::ConfigFile;
 
 my Bool $debug = False;
