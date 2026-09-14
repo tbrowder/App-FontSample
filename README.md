@@ -160,6 +160,20 @@ List the currently registered language codes with:
 
 ```text
 font-sample --languages
+# OUTPUT:
+de - German 
+en - English 
+es - Spanish 
+fr - French 
+id - Indonesian 
+it - Italian 
+nb - Norwegian (Bokmål) 
+nl - Dutch 
+nn - Norwegian (Nynorsk) 
+pl - Polish 
+ro - Romanian 
+ru - Russian 
+uk - Ukrainian
 ```
 
 Applications may register additional pangrams and language names at runtime.
