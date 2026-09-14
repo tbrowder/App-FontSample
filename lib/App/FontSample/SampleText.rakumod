@@ -72,5 +72,12 @@ method register-pangram(
 }
 
 method languages(--> List:D) {
-    return %pangrams.keys.sort.List;
+    my @list;
+    my @pkeys = %language-names.keys.sort;
+    for @pkeys -> $pkey {
+        my $lang = %language-names{$pkey};
+        #say "$pkey - $lang";
+        @list.push: "\n$pkey - $lang";
+    }
+    @list;
 }
