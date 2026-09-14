@@ -6,29 +6,56 @@
 
 =head1 DESCRIPTION
 
-C<App::FontSample> creates PDF font specimens, font comparisons, compact font
-collections, and character charts.
+C<App::FontSample> can create four font sample types
+(click each link to view on GitHub):
 
-C<App::FontSample> does not provide a font collection. Library callers supply
-one or more C<PDF::Content::FontObj> objects. The installed C<font-sample>
-program can load an OTF or TTF file directly.
-
-The current release supports Letter and A4 paper, portrait and landscape
-orientation, configurable margins, JSON job files, registered language
-pangrams, and four layouts (click each link to view on GitHub):
-
-=item L<speciman   | ./examples/pdf/example-specimen.pdf>
+=item L<specimen   | ./examples/pdf/example-specimen.pdf>
 =item L<comparison | ./examples/pdf/example-comparison.pdf>
 =item L<collection | ./examples/pdf/example-collection.pdf>
 =item L<characters | ./examples/pdf/example-characters.pdf>
 
+C<App::FontSample> does not provide fonts other the built-in core fonts
+which are limited to 256 glyphs.
+Library callers can supply
+one or more C<PDF::Content::FontObj> objects. The installed C<font-sample>
+program can load an OTF (or TTF) file directly.
+
+The current release supports Letter and A4 paper, portrait and landscape
+orientation, configurable margins, JSON job files, registered language
+pangrams, and the four layouts shown above.
+
 =head1 INSTALLATION
+
+Install C<App::FontSample> from the Raku ecosystem with:
 
 =begin code :lang<text>
 zef install App::FontSample
 =end code
 
-=head1 FIRST SAMPLE
+
+=head1 EXAMPLE USE
+
+The subroutine exposed for public use is shown here:
+
+=begin code
+sub create-font-sample(
+    PDF::Content::FontObj:D $font,
+    Str:D :$name!,
+    IO() :$output! where *.so,
+    Str:D :$paper = 'Letter',
+    Str :$media,
+    Bool:D :$landscape = False,
+    Numeric:D :$margin = 36,
+    Str:D :$family = '',
+    Str:D :$style  = '',
+    Str:D :$layout = 'specimen',
+    Str:D :$title  = 'Font Samples',
+    Str :$language = 'en',
+    :$debug,
+    *%options,
+    --> IO::Path:D
+) is export {...}
+=end code
 
 The easiest first test uses the standard PDF core font Times-Roman, so no
 external font file is required.
@@ -43,17 +70,17 @@ my $font = $pdf.core-font: :family<Times-Roman>;
 create-font-sample(
     $font,
     :name<Times-Roman>,
-    :title<Font Specimen>,
+    :title<Font Specimen>, # the default type is 'specimen'
     :language<en>,
     :output<sample.pdf>,
 );
 =end code
 
-The specimen identifies the font, labels the alphabet and punctuation sizes,
-labels the pangram as C<English (en)>, and includes a size waterfall with
-each point size shown at the left.
+The B<specimen> identifies the font, labels the alphabet and
+punctuation sizes, labels the pangram as C<English (en)>, and includes
+a size waterfall with each point size shown at the left.
 
-=head1 CURRENT LAYOUTS
+=head1 CURRENT OUTPUT LAYOUTS
 
 =head2 specimen
 
@@ -61,106 +88,44 @@ The C<specimen> layout produces one specimen page per font. It shows the font
 name, alphabet, numerals and punctuation, a labeled language pangram, and a
 size waterfall.
 
-=begin code :lang<raku>
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :layout<specimen>,
-    :title<Font Specimen>,
-    :language<en>,
-    :output<specimen.pdf>,
-);
-=end code
-
 See an example at L<click here | documents/example-specimen.pdf>.
-
 
 An explicit pangram must also identify its language so the PDF can label it:
 
-=begin code :lang<raku>
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :layout<specimen>,
-    :language<en>,
-    :pangram('Pack my box with five dozen liquor jugs.'),
-    :output<specimen-custom.pdf>,
-);
-=end code
-
 =head2 NOTE
 
-The I<collection> and I<comparison> sections below render each font at
+The B<collection> and B<comparison> sections below render each font at
 the same nominal point size. Visible character heights may differ
 because each typeface has its own font metrics.
 
 =head2 comparison
 
-The C<comparison> layout displays the same text in several fonts at one
+The B<comparison> layout displays the same text in several fonts at one
 stated point size. The font name is shown above each sample. The layout
 continues onto additional pages when needed.
 
-=begin code :lang<raku>
-create-font-comparison-sample(
-    @entries,
-    :layout<comparison>,
-    :title<Font Comparison>,
-    :comparison-size(18),
-    :text(
-        'The quick brown fox jumps over the lazy dog. 0123456789'
-    ),
-    :output<comparison.pdf>,
-);
-=end code
-
 =head2 collection
 
-The C<collection> layout is a compact one-page inventory of fonts. Each font
+The B<collection> layout is a compact one-page inventory of fonts. Each font
 name is followed by a short typographic identification string. The page title
 states the sample point size.
-
-=begin code :lang<raku>
-create-font-collection-sample(
-    @entries,
-    :layout<collection>,
-    :title<Font Collection>,
-    :sample-size(14),
-    :text('Aa Bb Cc Dd Ee Ff Gg 0123456789'),
-    :output<collection.pdf>,
-);
-=end code
 
 If the requested collection cannot fit within the page margins, the layout
 reports an error rather than overflowing the page.
 
 =head2 characters
 
-The C<characters> layout displays selected characters in a grid. The page
+The B<characters> layout displays selected characters in a grid. The page
 heading identifies the font and glyph point size, and each cell labels the
 glyph with its Unicode code point.
 
-=begin code :lang<raku>
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :layout<characters>,
-    :title<Character Sample>,
-    :characters(
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    ),
-    :columns(8),
-    :glyph-size(30),
-    :output<characters.pdf>,
-);
-=end code
-
-Library callers may supply C<characters> as a string or as a positional
+Library callers may supply B<characters> as a string or as a positional
 collection containing one-character strings, integer Unicode code points, or
 strings such as C<U+0041>.
 
 =head1 FONT COLLECTIONS
 
-A comparison or collection uses C<App::FontSample::FontEntry> objects.
+A comparison or collection uses B<App::FontSample::FontEntry> objects.
 
 =begin code :lang<raku>
 use App::FontSample;
@@ -189,35 +154,12 @@ create-font-collection-sample(
 =head1 PAPER AND PAGE OPTIONS
 
 Both C<Letter> and C<A4> are supported. Pages may be portrait or landscape,
-and the margin may be set in PDF points.
-
-=begin code :lang<raku>
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :paper<A4>,
-    :landscape,
-    :margin(36),
-    :language<en>,
-    :output<a4-landscape.pdf>,
-);
-=end code
-
-There are 72 PDF points in one inch.
+and the margin may be set in PostScript points (72 per inch)..
 
 =head1 LANGUAGE PANGRAMS
 
 The current built-in pangram registry includes English under the two-letter
 code C<en>.
-
-=begin code :lang<raku>
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :language<en>,
-    :output<english.pdf>,
-);
-=end code
 
 The resulting specimen labels the text C<English (en) pangram>.
 
@@ -231,7 +173,8 @@ Applications may register additional pangrams and language names at runtime.
 
 =head1 OTF AND TTF FILES
 
-The installed C<font-sample> program loads an OTF or TTF file directly:
+The installed C<font-sample> program loads an OTF or TTF file directly
+and uses one of the same layout names as shown above.
 
 =begin code :lang<text>
 font-sample \
@@ -239,15 +182,6 @@ font-sample \
     --output=sample.pdf \
     --layout=specimen \
     --language=en
-=end code
-
-Current direct-mode layout names are:
-
-=begin code :lang<text>
-specimen
-comparison
-collection
-characters
 =end code
 
 =head1 JSON INPUT
@@ -276,7 +210,16 @@ For example:
 
 =head1 REPRODUCIBLE PDF OUTPUT
 
-For generated examples or other PDFs that should be byte-for-byte reproducible,
+The normal PDF production process creates a unique document identification
+number and other metadata that may be different. This program by default
+does not do that so identical visual documents should compare
+identifally byte for byte. There is an option to allow the normal process to
+prevail.
+
+The defaut PDF output is modified so normal unique document identification
+and other metadata changes are turned off. As a result they should be
+byte-for-byte reproducible.
+
 use C<:reproducible> from Raku or C<--reproducible> in direct command-line mode.
 JSON jobs may use C<"reproducible": true>. Normal PDF generation retains the
 default unique document identification and metadata behavior.

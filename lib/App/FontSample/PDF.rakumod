@@ -61,7 +61,7 @@ method render-font(
 method render-collection(
     Positional:D $entries where *.elems > 0,
     IO() :$output! where *.so,
-    Bool:D :$reproducible = False,
+    Bool:D :$reproducible = True,
     *%options,
     --> IO::Path:D
 ) {

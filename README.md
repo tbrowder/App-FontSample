@@ -13,13 +13,9 @@ Create PDF font samples from `PDF::Content::FontObj` objects
 DESCRIPTION
 ===========
 
-`App::FontSample` creates PDF font specimens, font comparisons, compact font collections, and character charts.
+`App::FontSample` can create four font sample types (click each link to view on GitHub):
 
-`App::FontSample` does not provide a font collection. Library callers supply one or more `PDF::Content::FontObj` objects. The installed `font-sample` program can load an OTF or TTF file directly.
-
-The current release supports Letter and A4 paper, portrait and landscape orientation, configurable margins, JSON job files, registered language pangrams, and four layouts (click each link to view on GitHub):
-
-  * [speciman](./examples/pdf/example-specimen.pdf)
+  * [specimen](./examples/pdf/example-specimen.pdf)
 
   * [comparison](./examples/pdf/example-comparison.pdf)
 
@@ -27,15 +23,41 @@ The current release supports Letter and A4 paper, portrait and landscape orienta
 
   * [characters](./examples/pdf/example-characters.pdf)
 
+`App::FontSample` does not provide fonts other the built-in core fonts which are limited to 256 glyphs. Library callers can supply one or more `PDF::Content::FontObj` objects. The installed `font-sample` program can load an OTF (or TTF) file directly.
+
+The current release supports Letter and A4 paper, portrait and landscape orientation, configurable margins, JSON job files, registered language pangrams, and the four layouts shown above.
+
 INSTALLATION
 ============
+
+Install `App::FontSample` from the Raku ecosystem with:
 
 ```text
 zef install App::FontSample
 ```
 
-FIRST SAMPLE
-============
+EXAMPLE USE
+===========
+
+The subroutine exposed for public use is shown here:
+
+    sub create-font-sample(
+        PDF::Content::FontObj:D $font,
+        Str:D :$name!,
+        IO() :$output! where *.so,
+        Str:D :$paper = 'Letter',
+        Str :$media,
+        Bool:D :$landscape = False,
+        Numeric:D :$margin = 36,
+        Str:D :$family = '',
+        Str:D :$style  = '',
+        Str:D :$layout = 'specimen',
+        Str:D :$title  = 'Font Samples',
+        Str :$language = 'en',
+        :$debug,
+        *%options,
+        --> IO::Path:D
+    ) is export {...}
 
 The easiest first test uses the standard PDF core font Times-Roman, so no external font file is required.
 
@@ -49,115 +71,54 @@ my $font = $pdf.core-font: :family<Times-Roman>;
 create-font-sample(
     $font,
     :name<Times-Roman>,
-    :title<Font Specimen>,
+    :title<Font Specimen>, # the default type is 'specimen'
     :language<en>,
     :output<sample.pdf>,
 );
 ```
 
-The specimen identifies the font, labels the alphabet and punctuation sizes, labels the pangram as `English (en)`, and includes a size waterfall with each point size shown at the left.
+The **specimen** identifies the font, labels the alphabet and punctuation sizes, labels the pangram as `English (en)`, and includes a size waterfall with each point size shown at the left.
 
-CURRENT LAYOUTS
-===============
+CURRENT OUTPUT LAYOUTS
+======================
 
 specimen
 --------
 
 The `specimen` layout produces one specimen page per font. It shows the font name, alphabet, numerals and punctuation, a labeled language pangram, and a size waterfall.
 
-```raku
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :layout<specimen>,
-    :title<Font Specimen>,
-    :language<en>,
-    :output<specimen.pdf>,
-);
-```
-
 See an example at [click here](documents/example-specimen.pdf).
 
 An explicit pangram must also identify its language so the PDF can label it:
 
-```raku
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :layout<specimen>,
-    :language<en>,
-    :pangram('Pack my box with five dozen liquor jugs.'),
-    :output<specimen-custom.pdf>,
-);
-```
-
 NOTE
 ----
 
-The *collection* and *comparison* sections below render each font at the same nominal point size. Visible character heights may differ because each typeface has its own font metrics.
+The **collection** and **comparison** sections below render each font at the same nominal point size. Visible character heights may differ because each typeface has its own font metrics.
 
 comparison
 ----------
 
-The `comparison` layout displays the same text in several fonts at one stated point size. The font name is shown above each sample. The layout continues onto additional pages when needed.
-
-```raku
-create-font-comparison-sample(
-    @entries,
-    :layout<comparison>,
-    :title<Font Comparison>,
-    :comparison-size(18),
-    :text(
-        'The quick brown fox jumps over the lazy dog. 0123456789'
-    ),
-    :output<comparison.pdf>,
-);
-```
+The **comparison** layout displays the same text in several fonts at one stated point size. The font name is shown above each sample. The layout continues onto additional pages when needed.
 
 collection
 ----------
 
-The `collection` layout is a compact one-page inventory of fonts. Each font name is followed by a short typographic identification string. The page title states the sample point size.
-
-```raku
-create-font-collection-sample(
-    @entries,
-    :layout<collection>,
-    :title<Font Collection>,
-    :sample-size(14),
-    :text('Aa Bb Cc Dd Ee Ff Gg 0123456789'),
-    :output<collection.pdf>,
-);
-```
+The **collection** layout is a compact one-page inventory of fonts. Each font name is followed by a short typographic identification string. The page title states the sample point size.
 
 If the requested collection cannot fit within the page margins, the layout reports an error rather than overflowing the page.
 
 characters
 ----------
 
-The `characters` layout displays selected characters in a grid. The page heading identifies the font and glyph point size, and each cell labels the glyph with its Unicode code point.
+The **characters** layout displays selected characters in a grid. The page heading identifies the font and glyph point size, and each cell labels the glyph with its Unicode code point.
 
-```raku
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :layout<characters>,
-    :title<Character Sample>,
-    :characters(
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    ),
-    :columns(8),
-    :glyph-size(30),
-    :output<characters.pdf>,
-);
-```
-
-Library callers may supply `characters` as a string or as a positional collection containing one-character strings, integer Unicode code points, or strings such as `U+0041`.
+Library callers may supply **characters** as a string or as a positional collection containing one-character strings, integer Unicode code points, or strings such as `U+0041`.
 
 FONT COLLECTIONS
 ================
 
-A comparison or collection uses `App::FontSample::FontEntry` objects.
+A comparison or collection uses **App::FontSample::FontEntry** objects.
 
 ```raku
 use App::FontSample;
@@ -186,35 +147,12 @@ create-font-collection-sample(
 PAPER AND PAGE OPTIONS
 ======================
 
-Both `Letter` and `A4` are supported. Pages may be portrait or landscape, and the margin may be set in PDF points.
-
-```raku
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :paper<A4>,
-    :landscape,
-    :margin(36),
-    :language<en>,
-    :output<a4-landscape.pdf>,
-);
-```
-
-There are 72 PDF points in one inch.
+Both `Letter` and `A4` are supported. Pages may be portrait or landscape, and the margin may be set in PostScript points (72 per inch)..
 
 LANGUAGE PANGRAMS
 =================
 
 The current built-in pangram registry includes English under the two-letter code `en`.
-
-```raku
-create-font-sample(
-    $font,
-    :name<Times-Roman>,
-    :language<en>,
-    :output<english.pdf>,
-);
-```
 
 The resulting specimen labels the text `English (en) pangram`.
 
@@ -229,7 +167,7 @@ Applications may register additional pangrams and language names at runtime.
 OTF AND TTF FILES
 =================
 
-The installed `font-sample` program loads an OTF or TTF file directly:
+The installed `font-sample` program loads an OTF or TTF file directly and uses one of the same layout names as shown above.
 
 ```text
 font-sample \
@@ -237,15 +175,6 @@ font-sample \
     --output=sample.pdf \
     --layout=specimen \
     --language=en
-```
-
-Current direct-mode layout names are:
-
-```text
-specimen
-comparison
-collection
-characters
 ```
 
 JSON INPUT
@@ -276,7 +205,11 @@ For example:
 REPRODUCIBLE PDF OUTPUT
 =======================
 
-For generated examples or other PDFs that should be byte-for-byte reproducible, use `:reproducible` from Raku or `--reproducible` in direct command-line mode. JSON jobs may use `"reproducible": true`. Normal PDF generation retains the default unique document identification and metadata behavior.
+The normal PDF production process creates a unique document identification number and other metadata that may be different. This program by default does not do that so identical visual documents should compare identifally byte for byte. There is an option to allow the normal process to prevail.
+
+The defaut PDF output is modified so normal unique document identification and other metadata changes are turned off. As a result they should be byte-for-byte reproducible.
+
+use `:reproducible` from Raku or `--reproducible` in direct command-line mode. JSON jobs may use `"reproducible": true`. Normal PDF generation retains the default unique document identification and metadata behavior.
 
 OPTIONAL NOTOFONTS-OT USE
 =========================

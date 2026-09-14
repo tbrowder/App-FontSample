@@ -24,7 +24,8 @@ ok $text.contains('zef install App::FontSample'),
 ok $text.contains('PDF::Content::FontObj'),
     'README explains the font-object interface';
 
-for <specimen comparison collection characters> -> $layout {
+for <specimen comparison collection characters> -> $layout is copy {
+    $layout .= lc;
     ok $text.contains("=head2 $layout"),
         "README documents current '$layout' layout";
 }
